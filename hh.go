@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -277,55 +278,51 @@ func preDeHamming(size int, fileName string, fixErrors bool) error {
 	return nil
 }
 
-func statistics() {
-	clearScreen()
-	extensions := []string{".txt", ".ha1", ".ha2", ".ha3", ".ha4", ".huf", ".dic", ".hh1", ".dichh1", ".hh2", ".dichh2", ".hh3", ".dichh3", ".hh4", ".dichh4"}
-	var fileName string
-	r := bufio.NewReader(os.Stdin)
-	fmt.Println("Ingrese el nombre del archivo sin extension.")
-	_, _ = fmt.Fscanf(r, "%s", &fileName)
-	clearScreen()
+func statistics(url string) []string {
+	extension := strings.Split(url, ".")[1]
+	urlWithoutExtension := strings.Split(url, ".")[0]
+	extensions := []string{"." + extension, ".ha1", ".ha2", ".ha3", ".ha4", ".huf", ".dic", ".hh1", ".dichh1", ".hh2", ".dichh2", ".hh3", ".dichh3", ".hh4", ".dichh4"}
+	ret := make([]string, 0)
 	for index := 0; index < len(extensions); index++ {
-		body, err := loadFile(fileName+extensions[index], false)
+		body, err := loadFile(urlWithoutExtension+extensions[index], false)
 		if err == nil {
 			switch extensions[index] {
-			case ".txt":
-				fmt.Print(" El archivo original tiene un tamaño de:", len(body), " Bytes ", " o ", (len(body))/1024, " KB")
+			case "." + extension:
+				ret = append(ret, "El archivo original tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".ha1":
-				fmt.Print("\n\n Hamming 7 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming 7 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".ha2":
-				fmt.Print("\n\n Hamming 32 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming 32 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".ha3":
-				fmt.Print("\n\n Hamming 1024 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming 1024 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".ha4":
-				fmt.Print("\n\n Hamming 32"+
-					"768 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming 32768 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".huf":
-				fmt.Print("\n\n Huffman tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Huffman tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".dic":
-				fmt.Print("\n\n La tabla de Huffman tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "La tabla de Huffman tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".hh1":
-				fmt.Print("\n\n Hamming/Huffman 7 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming/Huffman 7 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".dichh1":
-				fmt.Print("\n\n La tabla de Hamming/Huffman 7 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "La tabla de Hamming/Huffman 7 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".hh2":
-				fmt.Print("\n\n Hamming/Huffman 32 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming/Huffman 32 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".dichh2":
-				fmt.Print("\n\n La tabla de Hamming/Huffman 32 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "La tabla de Hamming/Huffman 32 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".hh3":
-				fmt.Print("\n\n Hamming/Huffman 1024 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming/Huffman 1024 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".dichh3":
-				fmt.Print("\n\n La tabla de Hamming/Huffman 1024 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "La tabla de Hamming/Huffman 1024 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".hh4":
-				fmt.Print("\n\n Hamming/Huffman 32768 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "Hamming/Huffman 32768 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			case ".dichh4":
-				fmt.Print("\n\n La tabla de Hamming/Huffman 32768 tiene un tamaño de: ", len(body), " Bytes ", " o ", len(body)/1024, " KB")
+				ret = append(ret, "La tabla de Hamming/Huffman 32768 tiene un tamaño de: "+strconv.Itoa(len(body))+" Bytes "+" o "+strconv.Itoa((len(body))/1024)+" KB")
 			}
+		} else {
+			ret = append(ret, "" /*"No se encontro el archivo con extension "+extensions[index]+"."*/)
 		}
 	}
-	fmt.Println("\n\n Presione enter para continuar")
-	_, _ = fmt.Fscanf(r, "%s")
-	_, _ = fmt.Fscanf(r, "%s")
+	return ret
 }
 
 func huffman(fileName string, unixDate []byte) error {
