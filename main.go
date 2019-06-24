@@ -1060,19 +1060,19 @@ func showSuccess(window *walk.MainWindow, text string) {
 	window.SetEnabled(false)
 	var mw *walk.MainWindow
 	_ = MainWindow{
-		Title:    "Error",
+		Title:    "Exito",
 		AssignTo: &mw,
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
-				Text:      "Error!",
+				Text:      "Exito",
 				Font:      Font{"Arial", 20, true, false, false, false},
-				TextColor: walk.RGB(238, 50, 19),
+				TextColor: walk.RGB(25, 167, 40),
 			},
 			Label{
 				Text:      text,
 				Font:      Font{"Arial", 11, false, false, false, false},
-				TextColor: walk.RGB(238, 50, 19),
+				TextColor: walk.RGB(25, 167, 40),
 			},
 			PushButton{
 				Text: "Volver",
