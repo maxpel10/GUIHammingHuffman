@@ -847,6 +847,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 	var hora *walk.TextEdit
 	var minutos *walk.TextEdit
 	var segundos *walk.TextEdit
+	var comboBox *walk.ComboBox
 	var menuItems = []string{ // ComboBox項目リスト
 		"Hamming 7",
 		"Hamming 32",
@@ -944,8 +945,45 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Volver",
 						OnClicked: func() {
-							mw.Dispose()
-							window.Show()
+							var day, month, year, hour, minutes, seconds int
+							errs := make([]error, 6)
+							size := comboBox.CurrentIndex()
+							switch size {
+							case 0:
+								size = 7
+							case 1:
+								size = 32
+							case 2:
+								size = 1024
+							case 3:
+								size = 32768
+							}
+							fileName := url.Text()
+							anoString := ano.Text()
+							mesString := mes.Text()
+							diaString := dia.Text()
+							horaString := hora.Text()
+							minutosString := minutos.Text()
+							segundosString := segundos.Text()
+
+							year, errs[2] = strconv.Atoi(anoString)
+							month, errs[1] = strconv.Atoi(mesString)
+							day, errs[0] = strconv.Atoi(diaString)
+							hour, errs[3] = strconv.Atoi(horaString)
+							minutes, errs[4] = strconv.Atoi(minutosString)
+							seconds, errs[5] = strconv.Atoi(segundosString)
+							//Check if the date have errors
+							for i := 0; i < len(errs); i++ {
+								if errs[i] != nil {
+									showError(mw, "El formato de la fecha no es válido")
+								}
+							}
+							unixDate := convertDate(year, month, day, hour, minutes, seconds)
+							err := preHamming(size, fileName, unixDate)
+							if err != nil {
+								showError(mw, err.Error())
+							}
+							showSuccess(mw, "El archivo fue protegido correctamente")
 						},
 					},
 				},
