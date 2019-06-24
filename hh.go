@@ -1,8 +1,8 @@
 package main
 
 import (
-	"GUIHammingHuffman/HammingCodification"
-	"GUIHammingHuffman/HuffmanCodification"
+	"./HammingCodification"
+	"./HuffmanCodification"
 	"bufio"
 	"fmt"
 	"os"
@@ -80,7 +80,7 @@ func menuHammingHuffman() {
 		_, _ = fmt.Fscanf(r, "%d", &mainOp)
 		switch mainOp {
 		case 1:
-			_ = preHammingHuffman("", nil)
+			_ = preHammingHuffman(1, "", nil)
 		case 2:
 			_ = preDeHammingDeHuffman("")
 		case 3:
@@ -158,7 +158,7 @@ func introduceErrors(fileName string) error {
 	}
 	//Split the string between name and extension
 	extension := strings.Split(fileName, ".")
-	switch extension[1] {
+	switch extension[len(extension)-1] {
 	case "ha1":
 		body = originalText[:len(originalText)-10]
 		fileWithErrors = append(HammingCodification.InsertError7(body), originalText[len(originalText)-10:]...)
@@ -377,49 +377,24 @@ func desHuffman(fileName string) error {
 	return nil
 }
 
-func preHammingHuffman(fileName string, unixDate []byte) error {
+func preHammingHuffman(size int, fileName string, unixDate []byte) error {
 	//Ask for hamming type
-	var dhOp int
-	dhContinue_ := true
-	var size int
 	var bodyExtension string
 	var dicExtension string
-	for dhContinue_ {
-		clearScreen()
-		fmt.Println("¿Que tipo de Hamming quiere aplicar?")
-		fmt.Println("1 - Hamming 7")
-		fmt.Println("2 - Hamming 32")
-		fmt.Println("3 - Hamming 1024")
-		fmt.Println("4 - Hamming 32768")
-		fmt.Println("5 - Volver")
-		fmt.Printf("Su opcion: ")
-		dhOp = 0
-		switch dhOp {
-		case 1:
-			size = 7
-			bodyExtension = ".hh1"
-			dicExtension = ".dichh1"
-			dhContinue_ = false
-		case 2:
-			size = 32
-			bodyExtension = ".hh2"
-			dicExtension = ".dichh2"
-			dhContinue_ = false
-		case 3:
-			size = 1024
-			bodyExtension = ".hh3"
-			dicExtension = ".dichh3"
-			dhContinue_ = false
-		case 4:
-			size = 32768
-			bodyExtension = ".hh4"
-			dicExtension = ".dichh4"
-			dhContinue_ = false
-		case 5:
-			return nil
-		}
+	switch size {
+	case 7:
+		bodyExtension = ".hh1"
+		dicExtension = ".dichh1"
+	case 32:
+		bodyExtension = ".hh2"
+		dicExtension = ".dichh2"
+	case 1024:
+		bodyExtension = ".hh3"
+		dicExtension = ".dichh3"
+	case 32768:
+		bodyExtension = ".hh4"
+		dicExtension = ".dichh4"
 	}
-	//Ask for date
 
 	//Ask for file name
 	var body []byte
@@ -429,7 +404,6 @@ func preHammingHuffman(fileName string, unixDate []byte) error {
 		if err != nil {
 			return nil
 		}
-
 	}
 
 	//Compress
