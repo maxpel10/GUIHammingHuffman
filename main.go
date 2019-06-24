@@ -451,15 +451,8 @@ func hammingWindow(window *walk.MainWindow) {
 
 func deHammingWindow(window *walk.MainWindow) {
 	window.Hide()
-	var menuItems = []string{ // ComboBox項目リスト
-		"Hamming 7",
-		"Hamming 32",
-		"Hamming 1024",
-		"Hamming 32768",
-	}
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
-	var comboBox *walk.ComboBox
 	var checkBox *walk.CheckBox
 	var urlString string
 	_ = MainWindow{
@@ -473,16 +466,6 @@ func deHammingWindow(window *walk.MainWindow) {
 				Text:      "DeHamming",
 				Font:      Font{"Arial", 20, true, false, false, false},
 				TextColor: walk.RGB(255, 255, 255),
-			},
-			Label{
-				Text:      "Seleccione el tamaño aplicado:",
-				Font:      Font{"Arial", 12, true, false, false, false},
-				TextColor: walk.RGB(255, 255, 255),
-			},
-			ComboBox{
-				AssignTo:     &comboBox,
-				Model:        menuItems,
-				CurrentIndex: 0,
 			},
 			Label{
 				Text:      "Corregir Errores",
@@ -562,12 +545,6 @@ func deHammingWindow(window *walk.MainWindow) {
 
 func introduceErrorsWindow(window *walk.MainWindow) {
 	window.Hide()
-	var menuItems = []string{ // ComboBox項目リスト
-		"Hamming 7",
-		"Hamming 32",
-		"Hamming 1024",
-		"Hamming 32768",
-	}
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
 	var urlString string
@@ -582,15 +559,6 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 				Text:      "Introducir errores",
 				Font:      Font{"Arial", 20, true, false, false, false},
 				TextColor: walk.RGB(255, 255, 255),
-			},
-			Label{
-				Text:      "Seleccione el tamaño aplicado:",
-				Font:      Font{"Arial", 12, true, false, false, false},
-				TextColor: walk.RGB(255, 255, 255),
-			},
-			ComboBox{
-				Model:        menuItems,
-				CurrentIndex: 0,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
@@ -617,10 +585,13 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Introducir errores",
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
-
+							fileName := url.Text()
+							err := introduceErrors(fileName)
+							if err != nil {
+								showError(mw, err.Error())
+							} else {
+								showSuccess(mw, "Errores introducidos correctamente")
+							}
 						},
 					},
 					PushButton{
