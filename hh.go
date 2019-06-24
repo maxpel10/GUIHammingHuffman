@@ -47,13 +47,13 @@ func preHamming(size int, fileName string, unixDate []byte) error {
 	} else {
 		switch size {
 		case 7:
-			fileType = ".ha1"
+			fileType = "ha1"
 		case 32:
-			fileType = ".ha2"
+			fileType = "ha2"
 		case 1024:
-			fileType = ".ha3"
+			fileType = "ha3"
 		case 32768:
-			fileType = ".ha4"
+			fileType = "ha4"
 		}
 		if len(body) == 0 {
 			encodedBody = []byte{}
@@ -74,7 +74,8 @@ func preHamming(size int, fileName string, unixDate []byte) error {
 				encodedBody = HammingCodification.Hamming(size, body)
 			}
 		}
-		fileName = strings.Replace(fileName, ".txt", fileType, -1)
+		extension := strings.Split(fileName, ".")
+		fileName = strings.Replace(fileName, extension[len(extension)-1], fileType, -1)
 		encodedBody = append(encodedBody, unixDate...)
 		err = saveFile(fileName, encodedBody)
 		if err != nil {
