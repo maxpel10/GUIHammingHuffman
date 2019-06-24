@@ -135,13 +135,13 @@ func deHamming(fixErrors bool) {
 		_, _ = fmt.Fscanf(r, "%d", &dhOp)
 		switch dhOp {
 		case 1:
-			_ = preDeHamming(7, "", fixErrors)
+			_ = preDeHamming("", fixErrors)
 		case 2:
-			_ = preDeHamming(32, "", fixErrors)
+			_ = preDeHamming("", fixErrors)
 		case 3:
-			_ = preDeHamming(1024, "", fixErrors)
+			_ = preDeHamming("", fixErrors)
 		case 4:
-			_ = preDeHamming(32768, "", fixErrors)
+			_ = preDeHamming("", fixErrors)
 		case 5:
 			dhContinue_ = false
 		}
@@ -225,28 +225,37 @@ func preHamming(size int, fileName string, unixDate []byte) error {
 	return nil
 }
 
-func preDeHamming(size int, fileName string, fixErrors bool) error {
+func preDeHamming(fileName string, fixErrors bool) error {
 	var body []byte
 	var err error
 	var hammingCase string
+	var size int
 	extension := strings.Split(fileName, ".")
-	switch extension[1] {
+	switch extension[len(extension)-1] {
 	case "ha1":
 		hammingCase = "1"
+		size = 7
 	case "ha2":
 		hammingCase = "2"
+		size = 32
 	case "ha3":
 		hammingCase = "3"
+		size = 1024
 	case "ha4":
 		hammingCase = "4"
+		size = 32768
 	case "he1":
 		hammingCase = "1"
+		size = 7
 	case "he2":
 		hammingCase = "2"
+		size = 32
 	case "he3":
 		hammingCase = "3"
+		size = 1024
 	case "he4":
 		hammingCase = "4"
+		size = 32768
 	default:
 		return errors.New("La extension del archivo no es válida.")
 	}
@@ -266,9 +275,9 @@ func preDeHamming(size int, fileName string, fixErrors bool) error {
 		}
 	}
 	if fixErrors {
-		fileName = strings.Replace(fileName, "."+extension[1], ".dh"+hammingCase, -1)
+		fileName = strings.Replace(fileName, "."+extension[len(extension)-1], ".dh"+hammingCase, -1)
 	} else {
-		fileName = strings.Replace(fileName, "."+extension[1], ".de"+hammingCase, -1)
+		fileName = strings.Replace(fileName, "."+extension[len(extension)-1], ".de"+hammingCase, -1)
 	}
 	err = saveFile(fileName, decodedFile)
 	if err != nil {

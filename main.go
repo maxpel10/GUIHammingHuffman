@@ -405,14 +405,16 @@ func hammingWindow(window *walk.MainWindow) {
 							for i := 0; i < len(errs); i++ {
 								if errs[i] != nil {
 									showError(mw, "El formato de la fecha no es válido")
+									break
 								}
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
 							err := preHamming(size, fileName, unixDate)
 							if err != nil {
 								showError(mw, err.Error())
+							} else {
+								showSuccess(mw, "El archivo fue protegido correctamente")
 							}
-							showSuccess(mw, "El archivo fue protegido correctamente")
 						},
 					},
 					PushButton{
@@ -458,6 +460,7 @@ func deHammingWindow(window *walk.MainWindow) {
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
 	var comboBox *walk.ComboBox
+	var checkBox *walk.CheckBox
 	var urlString string
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
@@ -480,6 +483,15 @@ func deHammingWindow(window *walk.MainWindow) {
 				AssignTo:     &comboBox,
 				Model:        menuItems,
 				CurrentIndex: 0,
+			},
+			Label{
+				Text:      "Corregir Errores",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			CheckBox{
+				AssignTo: &checkBox,
+				Checked:  true,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
@@ -506,10 +518,14 @@ func deHammingWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Desproteger",
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
-
+							fixErrors := checkBox.Checked()
+							fileName := url.Text()
+							err := preDeHamming(fileName, fixErrors)
+							if err != nil {
+								showError(mw, err.Error())
+							} else {
+								showSuccess(mw, "Archivo decodificado correctamente")
+							}
 						},
 					},
 					PushButton{
