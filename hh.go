@@ -11,37 +11,6 @@ import (
 	"strings"
 )
 
-func main() {
-	var mainOp int
-	r := bufio.NewReader(os.Stdin)
-	continue_ := true
-	for continue_ {
-		clearScreen()
-		fmt.Println("1 - Hamming")
-		fmt.Println("2 - Huffman")
-		fmt.Println("3 - Hamming/Huffman")
-		fmt.Println("4 - Ver detalles de archivos")
-		fmt.Println("5 - Salir")
-		fmt.Print("Su opcion: ")
-		mainOp = 0
-		_, _ = fmt.Fscanf(r, "%s")
-		_, _ = fmt.Fscanf(r, "%d", &mainOp)
-		switch mainOp {
-		case 1:
-			menuHamming()
-		case 2:
-			menuHuffman()
-		case 3:
-			menuHammingHuffman()
-		case 4:
-			statistics()
-		case 5:
-			continue_ = false
-		}
-
-	}
-}
-
 func menuHamming() {
 	var mainOp int
 	r := bufio.NewReader(os.Stdin)

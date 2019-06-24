@@ -32,19 +32,19 @@ func main() {
 					PushButton{
 						Text: "Hamming",
 						OnClicked: func() {
-							preHamming(mw)
+							preHammingWindow(mw)
 						},
 					},
 					PushButton{
 						Text: "Huffman",
 						OnClicked: func() {
-							preHuffman(mw)
+							preHuffmanWindow(mw)
 						},
 					},
 					PushButton{
 						Text: "Hamming/Huffman",
 						OnClicked: func() {
-							preHammingHuffman(mw)
+							preHammingHuffmanWindow(mw)
 						},
 					},
 					PushButton{
@@ -84,7 +84,7 @@ func main() {
 	mw.Run()
 }
 
-func preHamming(window *walk.MainWindow) {
+func preHammingWindow(window *walk.MainWindow) {
 	window.Hide()
 	var mw *walk.MainWindow
 	_ = MainWindow{
@@ -151,7 +151,7 @@ func preHamming(window *walk.MainWindow) {
 	mw.Run()
 }
 
-func preHuffman(window *walk.MainWindow) {
+func preHuffmanWindow(window *walk.MainWindow) {
 	window.Hide()
 	var mw *walk.MainWindow
 	_ = MainWindow{
@@ -212,7 +212,7 @@ func preHuffman(window *walk.MainWindow) {
 	mw.Run()
 }
 
-func preHammingHuffman(window *walk.MainWindow) {
+func preHammingHuffmanWindow(window *walk.MainWindow) {
 	window.Hide()
 	var mw *walk.MainWindow
 	_ = MainWindow{
