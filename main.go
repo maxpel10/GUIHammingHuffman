@@ -712,6 +712,31 @@ func huffmanWindow(window *walk.MainWindow) {
 							/*mw.Dispose()
 							window.Show()
 							*/
+							var day, month, year, hour, minutes, seconds int
+							err := make([]error, 6)
+
+							year, err[2] = strconv.Atoi(ano.Text())
+							month, err[1] = strconv.Atoi(mes.Text())
+							day, err[0] = strconv.Atoi(dia.Text())
+							hour, err[3] = strconv.Atoi(hora.Text())
+							minutes, err[4] = strconv.Atoi(minutos.Text())
+							seconds, err[5] = strconv.Atoi(segundos.Text())
+
+							//Check if the date have errors
+							for i := 0; i < len(err); i++ {
+								if err[i] != nil {
+									showError(mw, "El formato de la fecha no es válido")
+									return
+								}
+							}
+							unixDate := convertDate(year, month, day, hour, minutes, seconds)
+							error := huffman(urlString, unixDate)
+							if error != nil {
+								showError(mw, error.Error())
+							} else {
+								showSuccess(mw, "El archivo fue comprimido correctamente")
+							}
+
 						},
 					},
 					PushButton{
@@ -792,6 +817,12 @@ func deHuffmanWindow(window *walk.MainWindow) {
 							/*mw.Dispose()
 							window.Show()
 							*/
+							error := desHuffman(urlString)
+							if error != nil {
+								showError(mw, error.Error())
+							} else {
+								showSuccess(mw, "El archivo fue comprimido correctamente")
+							}
 						},
 					},
 					PushButton{
@@ -1002,12 +1033,6 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 
 func deHammingHuffmanWindow(window *walk.MainWindow) {
 	window.Hide()
-	var menuItems = []string{ // ComboBox項目リスト
-		"Hamming 7",
-		"Hamming 32",
-		"Hamming 1024",
-		"Hamming 32768",
-	}
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
 	var urlString string
@@ -1027,10 +1052,6 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 				Text:      "Seleccione el tamaño aplicado:",
 				Font:      Font{"Arial", 12, true, false, false, false},
 				TextColor: walk.RGB(255, 255, 255),
-			},
-			ComboBox{
-				Model:        menuItems,
-				CurrentIndex: 0,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
@@ -1057,9 +1078,13 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Desproteger y descomprimir",
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
+							fileName := url.Text()
+							err := preDeHammingDeHuffman(fileName)
+							if err != nil {
+								showError(mw, err.Error())
+							} else {
+								showSuccess(mw, "Archivo decodificado correctamente")
+							}
 						},
 					},
 					PushButton{

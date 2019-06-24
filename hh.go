@@ -6,148 +6,9 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/pkg/errors"
-	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 )
-
-func menuHamming() {
-	var mainOp int
-	r := bufio.NewReader(os.Stdin)
-	continue_ := true
-	for continue_ {
-		clearScreen()
-		fmt.Println("1 - Proteger archivo")
-		fmt.Println("2 - Desporteger archivo")
-		fmt.Println("3 - Introducir errores")
-		fmt.Println("4 - Desproteger sin corregir errores")
-		fmt.Println("5 - Volver")
-		fmt.Print("Su opcion: ")
-		mainOp = 0
-		_, _ = fmt.Fscanf(r, "%d", &mainOp)
-		switch mainOp {
-		case 1:
-			hamming()
-		case 2:
-			deHamming(true)
-		case 3:
-			_ = introduceErrors("")
-		case 4:
-			deHamming(false)
-		case 5:
-			continue_ = false
-		}
-	}
-}
-
-func menuHuffman() {
-	var mainOp int
-	r := bufio.NewReader(os.Stdin)
-	continue_ := true
-	for continue_ {
-		clearScreen()
-		fmt.Println("1 - Codificar")
-		fmt.Println("2 - Decodificar")
-		fmt.Println("3 - Volver")
-		fmt.Print("Su opcion: ")
-		mainOp = 0
-		_, _ = fmt.Fscanf(r, "%d", &mainOp)
-		_, _ = fmt.Fscanf(r, "%s")
-		switch mainOp {
-		case 1:
-			_ = huffman("", nil)
-		case 2:
-			_ = desHuffman("")
-		case 3:
-			continue_ = false
-		}
-	}
-}
-
-func menuHammingHuffman() {
-	var mainOp int
-	r := bufio.NewReader(os.Stdin)
-	continue_ := true
-	for continue_ {
-		clearScreen()
-		fmt.Println("1 - Comprimir y proteger archivo")
-		fmt.Println("2 - Desproteger y descomprimir archivo")
-		fmt.Println("3 - Volver")
-		fmt.Print("Su opcion: ")
-		mainOp = 0
-		_, _ = fmt.Fscanf(r, "%s")
-		_, _ = fmt.Fscanf(r, "%d", &mainOp)
-		switch mainOp {
-		case 1:
-			_ = preHammingHuffman(1, "", nil)
-		case 2:
-			_ = preDeHammingDeHuffman("")
-		case 3:
-			continue_ = false
-		}
-	}
-}
-
-func hamming() {
-	var dhOp int
-	r := bufio.NewReader(os.Stdin)
-	dhContinue_ := true
-	for dhContinue_ {
-		clearScreen()
-		fmt.Println("¿Que tipo de Hamming quiere aplicar?")
-		fmt.Println("1 - Hamming 7")
-		fmt.Println("2 - Hamming 32")
-		fmt.Println("3 - Hamming 1024")
-		fmt.Println("4 - Hamming 32768")
-		fmt.Println("5 - Volver")
-		fmt.Printf("Su opcion: ")
-		dhOp = 0
-		_, _ = fmt.Fscanf(r, "%d", &dhOp)
-		switch dhOp {
-		case 1:
-			_ = preHamming(7, "", nil)
-		case 2:
-			_ = preHamming(32, "", nil)
-		case 3:
-			_ = preHamming(1024, "", nil)
-		case 4:
-			_ = preHamming(32768, "", nil)
-		case 5:
-			dhContinue_ = false
-		}
-	}
-}
-
-func deHamming(fixErrors bool) {
-	var dhOp int
-	r := bufio.NewReader(os.Stdin)
-	dhContinue_ := true
-	for dhContinue_ {
-		clearScreen()
-		fmt.Println("¿Que tipo de Hamming ha sido aplicado?")
-		fmt.Println("1 - Hamming 7")
-		fmt.Println("2 - Hamming 32")
-		fmt.Println("3 - Hamming 1024")
-		fmt.Println("4 - Hamming 32768")
-		fmt.Println("5 - Volver")
-		fmt.Printf("Su opcion: ")
-		dhOp = 0
-		_, _ = fmt.Fscanf(r, "%d", &dhOp)
-		switch dhOp {
-		case 1:
-			_ = preDeHamming("", fixErrors)
-		case 2:
-			_ = preDeHamming("", fixErrors)
-		case 3:
-			_ = preDeHamming("", fixErrors)
-		case 4:
-			_ = preDeHamming("", fixErrors)
-		case 5:
-			dhContinue_ = false
-		}
-	}
-}
 
 func introduceErrors(fileName string) error {
 	var body, fileWithErrors []byte
@@ -359,16 +220,17 @@ func huffman(fileName string, unixDate []byte) error {
 }
 
 func desHuffman(fileName string) error {
-	body, err := loadFile(fileName+".huf", false)
+	body, err := loadFile(fileName, false)
 	if err != nil {
 		return err
 	}
-	table, err := loadFile(fileName+".dic", true)
+	fileName = strings.Replace(fileName, "huf", "dic", -1)
+	table, err := loadFile(fileName, true)
 	if err != nil {
 		return err
 	} else {
 		decodedBody := HuffmanCodification.Deshuffman(body, table)
-		fileName = fileName + ".dhu"
+		fileName = strings.Replace(fileName, "dic", "dhu", -1)
 		err = saveFile(fileName, decodedBody)
 		if err != nil {
 			return err
@@ -446,73 +308,46 @@ func preHammingHuffman(size int, fileName string, unixDate []byte) error {
 }
 
 func preDeHammingDeHuffman(fileName string) error {
-
-	//Ask for hamming type
-	var dhOp int
-	r := bufio.NewReader(os.Stdin)
-	dhContinue_ := true
-	var size int
-	var bodyExtension string
-	var dicExtension string
 	var finalExtension string
+	var dicExtension string
+	var size int
 	extension := strings.Split(fileName, ".")
-	for dhContinue_ {
-		fmt.Println("¿Que tipo de Hamming ha sido aplicado?")
-		fmt.Println("1 - Hamming 7")
-		fmt.Println("2 - Hamming 32")
-		fmt.Println("3 - Hamming 1024")
-		fmt.Println("4 - Hamming 32768")
-		fmt.Println("5 - Volver")
-		fmt.Printf("Su opcion: ")
-		dhOp = 0
-		_, _ = fmt.Fscanf(r, "%d", &dhOp)
-		switch extension[1] {
-		case ".hh1":
-			size = 7
-			bodyExtension = ".hh1"
-			dicExtension = ".dichh1"
-			finalExtension = ".dhh1"
-			dhContinue_ = false
-		case ".hh2":
-			size = 32
-			bodyExtension = ".hh2"
-			dicExtension = ".dichh2"
-			finalExtension = ".dhh2"
-			dhContinue_ = false
-		case ".hh3":
-			size = 1024
-			bodyExtension = ".hh3"
-			dicExtension = ".dichh3"
-			finalExtension = ".dhh3"
-			dhContinue_ = false
-		case ".hh4":
-			size = 32768
-			bodyExtension = ".hh4"
-			dicExtension = ".dichh4"
-			finalExtension = ".dhh4"
-			dhContinue_ = false
-		default:
-			return errors.New("Extension invalida.")
-		}
+	switch extension[len(extension)-1] {
+	case "hh1":
+		dicExtension = ".dichh1"
+		finalExtension = ".dhh1"
+		size = 7
+	case "hh2":
+		dicExtension = ".dichh2"
+		finalExtension = ".dhh2"
+		size = 32
+	case "hh3":
+		dicExtension = ".dichh3"
+		finalExtension = ".dhh3"
+		size = 1024
+	case "hh4":
+		dicExtension = ".dichh4"
+		finalExtension = ".dhh4"
+		size = 32768
+	default:
+		return errors.New("La extension del archivo no es válida.")
 	}
-
-	//Ask for file name
 
 	var encodedBody []byte
 	var encodedDic []byte
 	err1 := errors.New("Not nil error")
 	err2 := errors.New("Not nil error")
-	fileName = extension[0]
-	encodedBody, err1 = loadFile(fileName+bodyExtension, false)
+
+	encodedBody, err1 = loadFile(fileName, false)
 	if err1 != nil {
 		return err1
 	}
-	encodedDic, err2 = loadFile(fileName+dicExtension, true)
+
+	encodedDic, err2 = loadFile(strings.Split(fileName, ".")[0]+dicExtension, true)
 	if err2 != nil {
 		return err2
 	}
 
-	//Desprotect
 	var decodedBody []byte
 	var decodedDic []byte
 	if size == 7 {
@@ -531,69 +366,6 @@ func preDeHammingDeHuffman(fileName string) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
-
-}
-
-/*func askDate() ([]byte, error) {
-	//Ask for the date
-	clearScreen()
-	r := bufio.NewReader(os.Stdin)
-	var auxDay, auxMonth, auxYear, auxHour, auxMinutes, auxSeconds string
-	var day, month, year, hour, minutes, seconds int
-	err := make([]error, 6)
-	fmt.Println("Ingrese el dia, mes, año, hora, minutos y segundos en los que quiere la decodificacion del archivo este disponible:")
-	fmt.Print("Dia: ")
-	_, _ = fmt.Fscanf(r, "%s", &auxDay)
-	_, _ = fmt.Fscanf(r, "%d")
-	fmt.Print("Mes: ")
-	_, _ = fmt.Fscanf(r, "%s", &auxMonth)
-	_, _ = fmt.Fscanf(r, "%d")
-	fmt.Print("Año: ")
-	_, _ = fmt.Fscanf(r, "%s", &auxYear)
-	_, _ = fmt.Fscanf(r, "%d")
-	fmt.Print("Hora: ")
-	_, _ = fmt.Fscanf(r, "%s", &auxHour)
-	_, _ = fmt.Fscanf(r, "%d")
-	fmt.Print("Minutos: ")
-	_, _ = fmt.Fscanf(r, "%s", &auxMinutes)
-	_, _ = fmt.Fscanf(r, "%d")
-	fmt.Print("Segundos: ")
-	_, _ = fmt.Fscanf(r, "%s", &auxSeconds)
-	_, _ = fmt.Fscanf(r, "%d")
-	//Searching errors process
-	day, err[0] = strconv.Atoi(auxDay)
-	month, err[1] = strconv.Atoi(auxMonth)
-	year, err[2] = strconv.Atoi(auxYear)
-	hour, err[3] = strconv.Atoi(auxHour)
-	minutes, err[4] = strconv.Atoi(auxMinutes)
-	seconds, err[5] = strconv.Atoi(auxSeconds)
-	//Check if the date have errors
-	for i := 0; i < len(err); i++ {
-		if err[i] != nil {
-			return nil, errors.New("Formato de fecha incorrecto.")
-		}
-	}
-	//No error found then create the date
-	parseMonth := time.Month(month)
-	location, _ := time.LoadLocation("America/Argentina/Cordoba")
-	auxDate := time.Date(year, parseMonth, day, hour, minutes, seconds, 0, location)
-	auxUnixDate := auxDate.Unix()
-	s := []byte(strconv.FormatInt(auxUnixDate, 10))
-	unixDate := []byte(s)
-	for i := len(unixDate); i < 10; i = len(unixDate) {
-		unixDate = append([]byte{48}, unixDate...)
-	}
-	clearScreen()
-	return unixDate, nil
-}*/
-
-func clearScreen() {
-	cmd := exec.Command("cmd", "/c", "cls") //Windows example, its tested
-	cmd.Stdout = os.Stdout
-	_ = cmd.Run()
-	fmt.Println("#####################################")
-	fmt.Println("___________Hamming/Huffman___________")
-	fmt.Println("#####################################")
-	fmt.Println()
 }
