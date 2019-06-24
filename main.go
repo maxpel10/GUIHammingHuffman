@@ -1002,17 +1002,9 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 
 func deHammingHuffmanWindow(window *walk.MainWindow) {
 	window.Hide()
-	var menuItems = []string{ // ComboBox項目リスト
-		"Hamming 7",
-		"Hamming 32",
-		"Hamming 1024",
-		"Hamming 32768",
-	}
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
 	var urlString string
-	var checkBox *walk.CheckBox
-	var comboBox *walk.ComboBox
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
@@ -1029,11 +1021,6 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 				Text:      "Seleccione el tamaño aplicado:",
 				Font:      Font{"Arial", 12, true, false, false, false},
 				TextColor: walk.RGB(255, 255, 255),
-			},
-			ComboBox{
-				AssignTo:     &comboBox,
-				Model:        menuItems,
-				CurrentIndex: 0,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
@@ -1060,9 +1047,8 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Desproteger y descomprimir",
 						OnClicked: func() {
-							fixErrors := checkBox.Checked()
 							fileName := url.Text()
-							err := preDeHamming(fileName, fixErrors)
+							err := preDeHammingDeHuffman(fileName)
 							if err != nil {
 								showError(mw, err.Error())
 							} else {
