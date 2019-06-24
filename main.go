@@ -5,6 +5,7 @@ import (
 	. "github.com/lxn/walk/declarative"
 	"github.com/lxn/win"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -18,13 +19,13 @@ func main() {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
 				Text:      "Menu Principal",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -90,8 +91,8 @@ func preHammingWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -275,13 +276,14 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 
 func hammingWindow(window *walk.MainWindow) {
 	window.Hide()
+	var comboBox *walk.ComboBox
 	var ano *walk.TextEdit
 	var mes *walk.TextEdit
 	var dia *walk.TextEdit
 	var hora *walk.TextEdit
 	var minutos *walk.TextEdit
 	var segundos *walk.TextEdit
-	var menuItems = []string{ // ComboBox項目リスト
+	var menuItems = []string{ // ComboBox
 		"Hamming 7",
 		"Hamming 32",
 		"Hamming 1024",
@@ -293,8 +295,8 @@ func hammingWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -308,6 +310,7 @@ func hammingWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
+				AssignTo:     &comboBox,
 				Model:        menuItems,
 				CurrentIndex: 0,
 			},
@@ -326,7 +329,7 @@ func hammingWindow(window *walk.MainWindow) {
 						Text: "Dropear archivo",
 						OnClicked: func() {
 							urlString = dropFile(mw)
-							url.SetText(urlString)
+							_ = url.SetText(urlString)
 						},
 					},
 				},
@@ -370,9 +373,44 @@ func hammingWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Proteger",
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
+							var day, month, year, hour, minutes, seconds int
+							errs := make([]error, 6)
+							size := comboBox.CurrentIndex()
+							switch size {
+							case 0:
+								size = 7
+							case 1:
+								size = 32
+							case 2:
+								size = 1024
+							case 3:
+								size = 32768
+							}
+							fileName := url.Text()
+							anoString := ano.Text()
+							mesString := mes.Text()
+							diaString := dia.Text()
+							horaString := hora.Text()
+							minutosString := minutos.Text()
+							segundosString := segundos.Text()
+
+							year, errs[2] = strconv.Atoi(anoString)
+							month, errs[1] = strconv.Atoi(mesString)
+							day, errs[0] = strconv.Atoi(diaString)
+							hour, errs[3] = strconv.Atoi(horaString)
+							minutes, errs[4] = strconv.Atoi(minutosString)
+							seconds, errs[5] = strconv.Atoi(segundosString)
+							//Check if the date have errors
+							for i := 0; i < len(errs); i++ {
+								if errs[i] != nil {
+									//TODO show warning
+								}
+							}
+							unixDate := convertDate(year, month, day, hour, minutes, seconds)
+							err := preHamming(size, fileName, unixDate)
+							if err != nil {
+								//TODO show warning
+							}
 						},
 					},
 					PushButton{
