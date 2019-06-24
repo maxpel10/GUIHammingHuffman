@@ -405,7 +405,7 @@ func hammingWindow(window *walk.MainWindow) {
 							for i := 0; i < len(errs); i++ {
 								if errs[i] != nil {
 									showError(mw, "El formato de la fecha no es válido")
-									break
+									return
 								}
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
@@ -891,6 +891,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
+				AssignTo:     &comboBox,
 				Model:        menuItems,
 				CurrentIndex: 0,
 			},
@@ -953,14 +954,6 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Comprimir y proteger",
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
-						},
-					},
-					PushButton{
-						Text: "Volver",
-						OnClicked: func() {
 							var day, month, year, hour, minutes, seconds int
 							errs := make([]error, 6)
 							size := comboBox.CurrentIndex()
@@ -992,16 +985,23 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 							for i := 0; i < len(errs); i++ {
 								if errs[i] != nil {
 									showError(mw, "El formato de la fecha no es válido")
-									break
+									return
 								}
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
-							err := preHamming(size, fileName, unixDate)
+							err := preHammingHuffman(size, fileName, unixDate)
 							if err != nil {
 								showError(mw, err.Error())
 							} else {
 								showSuccess(mw, "El archivo fue protegido correctamente")
 							}
+						},
+					},
+					PushButton{
+						Text: "Volver",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Show()
 						},
 					},
 				},
