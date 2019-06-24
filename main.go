@@ -1040,6 +1040,8 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
 	var urlString string
+	var checkBox *walk.CheckBox
+	var comboBox *walk.ComboBox
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
@@ -1058,6 +1060,7 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
+				AssignTo:     &comboBox,
 				Model:        menuItems,
 				CurrentIndex: 0,
 			},
@@ -1086,9 +1089,14 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Desproteger y descomprimir",
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
+							fixErrors := checkBox.Checked()
+							fileName := url.Text()
+							err := preDeHamming(fileName, fixErrors)
+							if err != nil {
+								showError(mw, err.Error())
+							} else {
+								showSuccess(mw, "Archivo decodificado correctamente")
+							}
 						},
 					},
 					PushButton{
