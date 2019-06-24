@@ -405,7 +405,7 @@ func hammingWindow(window *walk.MainWindow) {
 							for i := 0; i < len(errs); i++ {
 								if errs[i] != nil {
 									showError(mw, "El formato de la fecha no es válido")
-									break
+									return
 								}
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
