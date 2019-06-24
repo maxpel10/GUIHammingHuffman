@@ -311,6 +311,7 @@ func hammingWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
+				AssignTo:     &comboBox,
 				Model:        menuItems,
 				CurrentIndex: 0,
 			},
@@ -403,14 +404,15 @@ func hammingWindow(window *walk.MainWindow) {
 							//Check if the date have errors
 							for i := 0; i < len(errs); i++ {
 								if errs[i] != nil {
-									//TODO show warning
+									showError(mw, "El formato de la fecha no es válido")
 								}
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
 							err := preHamming(size, fileName, unixDate)
 							if err != nil {
-								//TODO show warning
+								showError(mw, err.Error())
 							}
+							showSuccess(mw, "El archivo fue protegido correctamente")
 						},
 					},
 					PushButton{
@@ -455,6 +457,7 @@ func deHammingWindow(window *walk.MainWindow) {
 	}
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
+	var comboBox *walk.ComboBox
 	var urlString string
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
@@ -474,6 +477,7 @@ func deHammingWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
+				AssignTo:     &comboBox,
 				Model:        menuItems,
 				CurrentIndex: 0,
 			},
