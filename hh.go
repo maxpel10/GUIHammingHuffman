@@ -217,16 +217,17 @@ func huffman(fileName string, unixDate []byte) error {
 }
 
 func desHuffman(fileName string) error {
-	body, err := loadFile(fileName+".huf", false)
+	body, err := loadFile(fileName, false)
 	if err != nil {
 		return err
 	}
-	table, err := loadFile(fileName+".dic", true)
+	fileName = strings.Replace(fileName, "huf", "dic", -1)
+	table, err := loadFile(fileName, true)
 	if err != nil {
 		return err
 	} else {
 		decodedBody := HuffmanCodification.Deshuffman(body, table)
-		fileName = fileName + ".dhu"
+		fileName = strings.Replace(fileName, "dic", "dhu", -1)
 		err = saveFile(fileName, decodedBody)
 		if err != nil {
 			return err
@@ -358,7 +359,7 @@ func preDeHammingDeHuffman(fileName string) error {
 	descompressBody := HuffmanCodification.Deshuffman(decodedBody, decodedDic)
 
 	//Save file
-	err := saveFile(strings.Split(fileName, ".")[0]+finalExtension, descompressBody)
+	err := saveFile(fileName+finalExtension, descompressBody)
 	if err != nil {
 		return err
 	}
