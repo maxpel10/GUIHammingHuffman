@@ -741,6 +741,31 @@ func huffmanWindow(window *walk.MainWindow) {
 							/*mw.Dispose()
 							window.Show()
 							*/
+							var day, month, year, hour, minutes, seconds int
+							err := make([]error, 6)
+
+							year, err[2] = strconv.Atoi(ano.Text())
+							month, err[1] = strconv.Atoi(mes.Text())
+							day, err[0] = strconv.Atoi(dia.Text())
+							hour, err[3] = strconv.Atoi(hora.Text())
+							minutes, err[4] = strconv.Atoi(minutos.Text())
+							seconds, err[5] = strconv.Atoi(segundos.Text())
+
+							//Check if the date have errors
+							for i := 0; i < len(err); i++ {
+								if err[i] != nil {
+									showError(mw, "El formato de la fecha no es válido")
+									return
+								}
+							}
+							unixDate := convertDate(year, month, day, hour, minutes, seconds)
+							error := huffman(urlString, unixDate)
+							if error != nil {
+								showError(mw, error.Error())
+							} else {
+								showSuccess(mw, "El archivo fue comprimido correctamente")
+							}
+
 						},
 					},
 					PushButton{
@@ -821,6 +846,12 @@ func deHuffmanWindow(window *walk.MainWindow) {
 							/*mw.Dispose()
 							window.Show()
 							*/
+							error := desHuffman(urlString)
+							if error != nil {
+								showError(mw, error.Error())
+							} else {
+								showSuccess(mw, "El archivo fue comprimido correctamente")
+							}
 						},
 					},
 					PushButton{

@@ -5,9 +5,9 @@ import (
 	"GUIHammingHuffman/HuffmanCodification"
 	"bufio"
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
 	"os/exec"
+	"src/github.com/pkg/errors"
 	"strconv"
 	"strings"
 )
@@ -358,16 +358,17 @@ func huffman(fileName string, unixDate []byte) error {
 }
 
 func desHuffman(fileName string) error {
-	body, err := loadFile(fileName+".huf", false)
+	body, err := loadFile(fileName, false)
 	if err != nil {
 		return err
 	}
-	table, err := loadFile(fileName+".dic", true)
+	fileName = strings.Replace(fileName, "huf", "dic", -1)
+	table, err := loadFile(fileName, true)
 	if err != nil {
 		return err
 	} else {
 		decodedBody := HuffmanCodification.Deshuffman(body, table)
-		fileName = fileName + ".dhu"
+		fileName = strings.Replace(fileName, "dic", "dhu", -1)
 		err = saveFile(fileName, decodedBody)
 		if err != nil {
 			return err
