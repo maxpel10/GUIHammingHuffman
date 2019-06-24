@@ -1033,12 +1033,6 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 
 func deHammingHuffmanWindow(window *walk.MainWindow) {
 	window.Hide()
-	var menuItems = []string{ // ComboBox項目リスト
-		"Hamming 7",
-		"Hamming 32",
-		"Hamming 1024",
-		"Hamming 32768",
-	}
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
 	var urlString string
@@ -1058,10 +1052,6 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 				Text:      "Seleccione el tamaño aplicado:",
 				Font:      Font{"Arial", 12, true, false, false, false},
 				TextColor: walk.RGB(255, 255, 255),
-			},
-			ComboBox{
-				Model:        menuItems,
-				CurrentIndex: 0,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
@@ -1088,9 +1078,13 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Desproteger y descomprimir",
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
+							fileName := url.Text()
+							err := preDeHammingDeHuffman(fileName)
+							if err != nil {
+								showError(mw, err.Error())
+							} else {
+								showSuccess(mw, "Archivo decodificado correctamente")
+							}
 						},
 					},
 					PushButton{
