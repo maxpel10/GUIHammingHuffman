@@ -158,7 +158,7 @@ func introduceErrors(fileName string) error {
 	}
 	//Split the string between name and extension
 	extension := strings.Split(fileName, ".")
-	switch extension[1] {
+	switch extension[len(extension)-1] {
 	case "ha1":
 		body = originalText[:len(originalText)-10]
 		fileWithErrors = append(HammingCodification.InsertError7(body), originalText[len(originalText)-10:]...)
