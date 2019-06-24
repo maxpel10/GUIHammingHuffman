@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./HammingCodification"
-	"./HuffmanCodification"
+	"GUIHammingHuffman/HammingCodification"
+	"GUIHammingHuffman/HuffmanCodification"
 	"bufio"
 	"fmt"
 	"github.com/pkg/errors"
@@ -215,7 +215,8 @@ func preHamming(size int, fileName string, unixDate []byte) error {
 				encodedBody = HammingCodification.Hamming(size, body)
 			}
 		}
-		fileName = strings.Replace(fileName, ".txt", fileType, -1)
+		extension := strings.Split(fileName, ".")
+		fileName = strings.Replace(fileName, extension[len(extension)-1], fileType, -1)
 		encodedBody = append(encodedBody, unixDate...)
 		err = saveFile(fileName, encodedBody)
 		if err != nil {
