@@ -992,14 +992,16 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 							for i := 0; i < len(errs); i++ {
 								if errs[i] != nil {
 									showError(mw, "El formato de la fecha no es válido")
+									break
 								}
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
 							err := preHamming(size, fileName, unixDate)
 							if err != nil {
 								showError(mw, err.Error())
+							} else {
+								showSuccess(mw, "El archivo fue protegido correctamente")
 							}
-							showSuccess(mw, "El archivo fue protegido correctamente")
 						},
 					},
 				},
