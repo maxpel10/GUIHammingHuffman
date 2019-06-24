@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -19,13 +20,13 @@ func main() {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
+		MinSize:  Size{600, 400},
+		MaxSize:  Size{600, 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
 				Text:      "Menu Principal",
-				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
+				Font:      Font{"Arial", 20, true, false, false, false},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -219,8 +220,8 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -276,14 +277,13 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 
 func hammingWindow(window *walk.MainWindow) {
 	window.Hide()
-	var comboBox *walk.ComboBox
 	var ano *walk.TextEdit
 	var mes *walk.TextEdit
 	var dia *walk.TextEdit
 	var hora *walk.TextEdit
 	var minutos *walk.TextEdit
 	var segundos *walk.TextEdit
-	var menuItems = []string{ // ComboBox
+	var menuItems = []string{ // ComboBox項目リスト
 		"Hamming 7",
 		"Hamming 32",
 		"Hamming 1024",
@@ -291,6 +291,7 @@ func hammingWindow(window *walk.MainWindow) {
 	}
 	var mw *walk.MainWindow
 	var url *walk.TextEdit
+	var comboBox *walk.ComboBox
 	var urlString string
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
@@ -310,7 +311,6 @@ func hammingWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
-				AssignTo:     &comboBox,
 				Model:        menuItems,
 				CurrentIndex: 0,
 			},
@@ -320,7 +320,7 @@ func hammingWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &url,
@@ -340,7 +340,7 @@ func hammingWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &ano,
@@ -446,7 +446,98 @@ func hammingWindow(window *walk.MainWindow) {
 }
 
 func deHammingWindow(window *walk.MainWindow) {
+	window.Hide()
+	var menuItems = []string{ // ComboBox項目リスト
+		"Hamming 7",
+		"Hamming 32",
+		"Hamming 1024",
+		"Hamming 32768",
+	}
+	var mw *walk.MainWindow
+	var url *walk.TextEdit
+	var urlString string
+	_ = MainWindow{
+		Title:    "Práctico de máquina TI",
+		AssignTo: &mw,
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "DeHamming",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      "Seleccione el tamaño aplicado:",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			ComboBox{
+				Model:        menuItems,
+				CurrentIndex: 0,
+			},
+			Label{
+				Text:      "Seleccione la ruta del archivo",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			HSplitter{
+				MaxSize: Size{600, 20},
+				Children: []Widget{
+					TextEdit{
+						AssignTo: &url,
+					},
+					PushButton{
+						Text: "Dropear archivo",
+						OnClicked: func() {
+							urlString = dropFile(mw)
+							_ = url.SetText(urlString)
+						},
+					},
+				},
+			},
+			HSplitter{
+				Children: []Widget{
+					PushButton{
+						Text: "Desproteger",
+						OnClicked: func() {
+							/*mw.Dispose()
+							window.Show()
+							*/
 
+						},
+					},
+					PushButton{
+						Text: "Volver",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Show()
+						},
+					},
+				},
+			},
+		},
+	}.Create()
+
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-SIZE_W)/2,
+		(yScreen-SIZE_H)/2,
+		SIZE_W,
+		SIZE_H,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
 }
 
 func introduceErrorsWindow(window *walk.MainWindow) {
@@ -467,8 +558,8 @@ func huffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -482,7 +573,7 @@ func huffmanWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &url,
@@ -491,7 +582,7 @@ func huffmanWindow(window *walk.MainWindow) {
 						Text: "Dropear archivo",
 						OnClicked: func() {
 							urlString = dropFile(mw)
-							url.SetText(urlString)
+							_ = url.SetText(urlString)
 						},
 					},
 				},
@@ -502,7 +593,7 @@ func huffmanWindow(window *walk.MainWindow) {
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &ano,
@@ -531,7 +622,7 @@ func huffmanWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
-				MaxSize: Size{600, 50},
+				MaxSize: Size{Width: 600, Height: 50},
 				Children: []Widget{
 					PushButton{
 						Text: "Comprimir",
@@ -574,8 +665,83 @@ func huffmanWindow(window *walk.MainWindow) {
 }
 
 func deHuffmanWindow(window *walk.MainWindow) {
-	/*var url *walk.TextEdit
-	var urlString string*/
+	window.Hide()
+	var mw *walk.MainWindow
+	var url *walk.TextEdit
+	var urlString string
+	_ = MainWindow{
+		Title:    "Práctico de máquina TI",
+		AssignTo: &mw,
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "DeHufmman",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      "Seleccione la ruta del archivo",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			HSplitter{
+				MaxSize: Size{600, 20},
+				Children: []Widget{
+					TextEdit{
+						AssignTo: &url,
+					},
+					PushButton{
+						Text: "Dropear archivo",
+						OnClicked: func() {
+							urlString = dropFile(mw)
+							_ = url.SetText(urlString)
+						},
+					},
+				},
+			},
+			HSplitter{
+				MaxSize: Size{Width: 600, Height: 50},
+				Children: []Widget{
+					PushButton{
+						Text: "Descomprimir",
+						OnClicked: func() {
+							/*mw.Dispose()
+							window.Show()
+							*/
+						},
+					},
+					PushButton{
+						Text: "Volver",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Show()
+						},
+					},
+				},
+			},
+		},
+	}.Create()
+
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-SIZE_W)/2,
+		(yScreen-SIZE_H)/2,
+		SIZE_W,
+		SIZE_H,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
 }
 
 func hammingHuffmanWindow(window *walk.MainWindow) {
@@ -631,7 +797,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 						Text: "Dropear archivo",
 						OnClicked: func() {
 							urlString = dropFile(mw)
-							url.SetText(urlString)
+							_ = url.SetText(urlString)
 						},
 					},
 				},
@@ -713,8 +879,97 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 }
 
 func deHammingHuffmanWindow(window *walk.MainWindow) {
-	/*var url *walk.TextEdit
-	var urlString string*/
+	window.Hide()
+	var menuItems = []string{ // ComboBox項目リスト
+		"Hamming 7",
+		"Hamming 32",
+		"Hamming 1024",
+		"Hamming 32768",
+	}
+	var mw *walk.MainWindow
+	var url *walk.TextEdit
+	var urlString string
+	_ = MainWindow{
+		Title:    "Práctico de máquina TI",
+		AssignTo: &mw,
+		MinSize:  Size{600, 400},
+		MaxSize:  Size{600, 400},
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "DeHamming/DeHuffman",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      "Seleccione el tamaño aplicado:",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			ComboBox{
+				Model:        menuItems,
+				CurrentIndex: 0,
+			},
+			Label{
+				Text:      "Seleccione la ruta del archivo",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			HSplitter{
+				MaxSize: Size{600, 20},
+				Children: []Widget{
+					TextEdit{
+						AssignTo: &url,
+					},
+					PushButton{
+						Text: "Dropear archivo",
+						OnClicked: func() {
+							urlString = dropFile(mw)
+							_ = url.SetText(urlString)
+						},
+					},
+				},
+			},
+			HSplitter{
+				Children: []Widget{
+					PushButton{
+						Text: "Desproteger y descomprimir",
+						OnClicked: func() {
+							/*mw.Dispose()
+							window.Show()
+							*/
+						},
+					},
+					PushButton{
+						Text: "Volver",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Show()
+						},
+					},
+				},
+			},
+		},
+	}.Create()
+
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-SIZE_W)/2,
+		(yScreen-SIZE_H)/2,
+		SIZE_W,
+		SIZE_H,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
 }
 
 func statisticsWindows(window *walk.MainWindow) {
@@ -746,8 +1001,9 @@ func dropFile(window *walk.MainWindow) string {
 			PushButton{
 				Text: "Cancelar",
 				OnClicked: func() {
-					mw.Dispose()
-					window.Show()
+					showError(mw, "ESTA ES UNA PRUEBA.")
+					//mw.Dispose()
+					//window.Show()
 				},
 			},
 		},
@@ -772,4 +1028,66 @@ func dropFile(window *walk.MainWindow) string {
 	mw.Run()
 	window.SetEnabled(true)
 	return ret
+}
+
+func convertDate(year int, month int, day int, hour int, minutes int, seconds int) []byte {
+	//No error found then create the date
+	parseMonth := time.Month(month)
+	location, _ := time.LoadLocation("America/Argentina/Cordoba")
+	auxDate := time.Date(year, parseMonth, day, hour, minutes, seconds, 0, location)
+	auxUnixDate := auxDate.Unix()
+	s := []byte(strconv.FormatInt(auxUnixDate, 10))
+	unixDate := []byte(s)
+	for i := len(unixDate); i < 10; i = len(unixDate) {
+		unixDate = append([]byte{48}, unixDate...)
+	}
+	return unixDate
+}
+
+func showError(window *walk.MainWindow, text string) {
+	window.SetEnabled(false)
+	var mw *walk.MainWindow
+	_ = MainWindow{
+		Title:    "Error",
+		AssignTo: &mw,
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "Error!",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(238, 50, 19),
+			},
+			Label{
+				Text:      text,
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(238, 50, 19),
+			},
+			PushButton{
+				Text: "Volver",
+				OnClicked: func() {
+					mw.Dispose()
+					window.Show()
+				},
+			},
+		},
+	}.Create()
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-480)/2,
+		(yScreen-200)/2,
+		480,
+		200,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
+	window.SetEnabled(true)
 }
