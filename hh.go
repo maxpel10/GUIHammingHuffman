@@ -3,8 +3,6 @@ package main
 import (
 	"GUIHammingHuffman/HammingCodification"
 	"GUIHammingHuffman/HuffmanCodification"
-	"bufio"
-	"fmt"
 	"github.com/pkg/errors"
 	"strconv"
 	"strings"
@@ -49,13 +47,13 @@ func preHamming(size int, fileName string, unixDate []byte) error {
 	} else {
 		switch size {
 		case 7:
-			fileType = ".ha1"
+			fileType = "ha1"
 		case 32:
-			fileType = ".ha2"
+			fileType = "ha2"
 		case 1024:
-			fileType = ".ha3"
+			fileType = "ha3"
 		case 32768:
-			fileType = ".ha4"
+			fileType = "ha4"
 		}
 		if len(body) == 0 {
 			encodedBody = []byte{}
