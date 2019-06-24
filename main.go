@@ -966,9 +966,8 @@ func dropFile(window *walk.MainWindow) string {
 			PushButton{
 				Text: "Cancelar",
 				OnClicked: func() {
-					showError(mw, "ESTA ES UNA PRUEBA.")
-					//mw.Dispose()
-					//window.Show()
+					mw.Dispose()
+					window.Show()
 				},
 			},
 		},
@@ -1010,6 +1009,54 @@ func convertDate(year int, month int, day int, hour int, minutes int, seconds in
 }
 
 func showError(window *walk.MainWindow, text string) {
+	window.SetEnabled(false)
+	var mw *walk.MainWindow
+	_ = MainWindow{
+		Title:    "Error",
+		AssignTo: &mw,
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "Error!",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(238, 50, 19),
+			},
+			Label{
+				Text:      text,
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(238, 50, 19),
+			},
+			PushButton{
+				Text: "Volver",
+				OnClicked: func() {
+					mw.Dispose()
+					window.Show()
+				},
+			},
+		},
+	}.Create()
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-480)/2,
+		(yScreen-200)/2,
+		480,
+		200,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
+	window.SetEnabled(true)
+}
+
+func showSuccess(window *walk.MainWindow, text string) {
 	window.SetEnabled(false)
 	var mw *walk.MainWindow
 	_ = MainWindow{
