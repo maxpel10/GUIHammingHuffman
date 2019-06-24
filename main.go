@@ -52,7 +52,7 @@ func main() {
 					PushButton{
 						Text: "Estadisticas de tamaño",
 						OnClicked: func() {
-							statisticsWindows(mw)
+							preStatisticsWindow(mw)
 						},
 					},
 				},
@@ -561,7 +561,98 @@ func deHammingWindow(window *walk.MainWindow) {
 }
 
 func introduceErrorsWindow(window *walk.MainWindow) {
+	window.Hide()
+	var menuItems = []string{ // ComboBox項目リスト
+		"Hamming 7",
+		"Hamming 32",
+		"Hamming 1024",
+		"Hamming 32768",
+	}
+	var mw *walk.MainWindow
+	var url *walk.TextEdit
+	var urlString string
+	_ = MainWindow{
+		Title:    "Práctico de máquina TI",
+		AssignTo: &mw,
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "Introducir errores",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      "Seleccione el tamaño aplicado:",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			ComboBox{
+				Model:        menuItems,
+				CurrentIndex: 0,
+			},
+			Label{
+				Text:      "Seleccione la ruta del archivo",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			HSplitter{
+				MaxSize: Size{600, 20},
+				Children: []Widget{
+					TextEdit{
+						AssignTo: &url,
+					},
+					PushButton{
+						Text: "Dropear archivo",
+						OnClicked: func() {
+							urlString = dropFile(mw)
+							_ = url.SetText(urlString)
+						},
+					},
+				},
+			},
+			HSplitter{
+				Children: []Widget{
+					PushButton{
+						Text: "Introducir errores",
+						OnClicked: func() {
+							/*mw.Dispose()
+							window.Show()
+							*/
 
+						},
+					},
+					PushButton{
+						Text: "Volver",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Show()
+						},
+					},
+				},
+			},
+		},
+	}.Create()
+
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-SIZE_W)/2,
+		(yScreen-SIZE_H)/2,
+		SIZE_W,
+		SIZE_H,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
 }
 
 func huffmanWindow(window *walk.MainWindow) {
@@ -772,6 +863,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 	var hora *walk.TextEdit
 	var minutos *walk.TextEdit
 	var segundos *walk.TextEdit
+	var comboBox *walk.ComboBox
 	var menuItems = []string{ // ComboBox項目リスト
 		"Hamming 7",
 		"Hamming 32",
@@ -869,8 +961,45 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 					PushButton{
 						Text: "Volver",
 						OnClicked: func() {
-							mw.Dispose()
-							window.Show()
+							var day, month, year, hour, minutes, seconds int
+							errs := make([]error, 6)
+							size := comboBox.CurrentIndex()
+							switch size {
+							case 0:
+								size = 7
+							case 1:
+								size = 32
+							case 2:
+								size = 1024
+							case 3:
+								size = 32768
+							}
+							fileName := url.Text()
+							anoString := ano.Text()
+							mesString := mes.Text()
+							diaString := dia.Text()
+							horaString := hora.Text()
+							minutosString := minutos.Text()
+							segundosString := segundos.Text()
+
+							year, errs[2] = strconv.Atoi(anoString)
+							month, errs[1] = strconv.Atoi(mesString)
+							day, errs[0] = strconv.Atoi(diaString)
+							hour, errs[3] = strconv.Atoi(horaString)
+							minutes, errs[4] = strconv.Atoi(minutosString)
+							seconds, errs[5] = strconv.Atoi(segundosString)
+							//Check if the date have errors
+							for i := 0; i < len(errs); i++ {
+								if errs[i] != nil {
+									showError(mw, "El formato de la fecha no es válido")
+								}
+							}
+							unixDate := convertDate(year, month, day, hour, minutes, seconds)
+							err := preHamming(size, fileName, unixDate)
+							if err != nil {
+								showError(mw, err.Error())
+							}
+							showSuccess(mw, "El archivo fue protegido correctamente")
 						},
 					},
 				},
@@ -992,8 +1121,204 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 	mw.Run()
 }
 
-func statisticsWindows(window *walk.MainWindow) {
+func preStatisticsWindow(window *walk.MainWindow) {
+	window.Hide()
+	var mw *walk.MainWindow
+	var url *walk.TextEdit
+	var urlString string
+	_ = MainWindow{
+		Title:    "Práctico de máquina TI",
+		AssignTo: &mw,
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "Estadisticas de tamaño",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      "Seleccione la ruta del archivo original",
+				Font:      Font{"Arial", 12, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			HSplitter{
+				MaxSize: Size{Width: 600, Height: 20},
+				Children: []Widget{
+					TextEdit{
+						AssignTo: &url,
+					},
+					PushButton{
+						Text: "Dropear archivo",
+						OnClicked: func() {
+							urlString = dropFile(mw)
+							_ = url.SetText(urlString)
+						},
+					},
+				},
+			},
+			HSplitter{
+				MaxSize: Size{Width: 600, Height: 50},
+				Children: []Widget{
+					PushButton{
+						Text: "Ver tamaños",
+						OnClicked: func() {
+							statisticsWindow(mw, url.Text())
+						},
+					},
+					PushButton{
+						Text: "Volver",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Show()
+						},
+					},
+				},
+			},
+		},
+	}.Create()
 
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-SIZE_W)/2,
+		(yScreen-SIZE_H)/2,
+		SIZE_W,
+		SIZE_H,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
+
+}
+
+func statisticsWindow(window *walk.MainWindow, url string) {
+	window.Hide()
+	var mw *walk.MainWindow
+	answer := statistics(url)
+	_ = MainWindow{
+		Title:    "Práctico de máquina TI",
+		AssignTo: &mw,
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "Estadisticas de tamaño",
+				Font:      Font{"Arial", 20, true, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[0],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[1],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[2],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[3],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[4],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[5],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[6],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[7],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[8],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[9],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[10],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[11],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[12],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[13],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			Label{
+				Text:      answer[14],
+				Font:      Font{"Arial", 11, false, false, false, false},
+				TextColor: walk.RGB(255, 255, 255),
+			},
+			PushButton{
+				Text: "Volver",
+				OnClicked: func() {
+					mw.Dispose()
+					window.Show()
+				},
+			},
+		},
+	}.Create()
+
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-SIZE_W)/2,
+		(yScreen-SIZE_H)/2,
+		SIZE_W,
+		SIZE_H,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
 }
 
 func dropFile(window *walk.MainWindow) string {
