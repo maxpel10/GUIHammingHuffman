@@ -360,7 +360,7 @@ func preDeHammingDeHuffman(fileName string) error {
 	descompressBody := HuffmanCodification.Deshuffman(decodedBody, decodedDic)
 
 	//Save file
-	err := saveFile(fileName+finalExtension, descompressBody)
+	err := saveFile(strings.Split(fileName, ".")[0]+finalExtension, descompressBody)
 	if err != nil {
 		return err
 	}

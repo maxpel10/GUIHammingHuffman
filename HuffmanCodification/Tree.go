@@ -1,7 +1,7 @@
 package HuffmanCodification
 
 import (
-	"github.com/pkg/errors"
+	"src/github.com/pkg/errors"
 	"strings"
 )
 
@@ -30,7 +30,7 @@ func (treeNode *TreeNode) New(node Item) (*TreeNode, error) {
 //Returns a new treeNode with symbol = 0, the sum of the weights.
 //
 //Points to the sons, on the left the lightest
-func (tree *TreeNode) Insert(son1 *TreeNode, son2 *TreeNode) *TreeNode {
+func (treeNode *TreeNode) Insert(son1 *TreeNode, son2 *TreeNode) *TreeNode {
 	var root *TreeNode
 	var item Item
 
@@ -51,17 +51,17 @@ func (tree *TreeNode) Insert(son1 *TreeNode, son2 *TreeNode) *TreeNode {
 }
 
 // This function go through the binary tree making the huffman codification (to right is 1, to left is a 0).
-func (tree *TreeNode) GenerateCodification(codification string, codifications []string) []string {
-	if tree.Right == nil && tree.Left == nil {
+func (treeNode *TreeNode) GenerateCodification(codification string, codifications []string) []string {
+	if treeNode.Right == nil && treeNode.Left == nil {
 		buffer := strings.Builder{}
-		buffer.WriteByte(tree.Value.Symbol)
+		buffer.WriteByte(treeNode.Value.Symbol)
 		codification = codification + "@@" + buffer.String()
 		codifications = append(codifications, codification)
 		return codifications
 	}
 	codificationLeft := codification + "0"
-	codifications = tree.Left.GenerateCodification(codificationLeft, codifications)
+	codifications = treeNode.Left.GenerateCodification(codificationLeft, codifications)
 	codification += "1"
-	codifications = tree.Right.GenerateCodification(codification, codifications)
+	codifications = treeNode.Right.GenerateCodification(codification, codifications)
 	return codifications
 }
