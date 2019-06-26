@@ -26,7 +26,7 @@ func takeBits(bits int, body []byte, NumberOfTrashBits int) ([]byte, []byte, int
 
 	var cantByte int
 	var cantBit int
-	var arr_bit []byte
+	var arrBit []byte
 	var mask uint8
 	var bait byte
 	var finish bool
@@ -50,33 +50,33 @@ func takeBits(bits int, body []byte, NumberOfTrashBits int) ([]byte, []byte, int
 
 			// adjust
 
-			bait_aux := body[index]
-			bait_aux = bait_aux << uint(NumberOfTrashBits) // shift to left how many bits i need to remove
+			baitAux := body[index]
+			baitAux = baitAux << uint(NumberOfTrashBits) // shift to left how many bits i need to remove
 			nextBait := body[index+1]
 			nextBait = nextBait >> uint(bitsToMove)
-			aux := bait_aux | nextBait // merge the bytes to pass the bits from the next byte to this one.
+			aux := baitAux | nextBait // merge the bytes to pass the bits from the next byte to this one.
 
-			arr_bit = append(arr_bit, aux) // put it on the array.
+			arrBit = append(arrBit, aux) // put it on the array.
 
 		}
 
 		if finish == true {
 			if cantBit > 0 {
-				bait = arr_bit[cantByte] // adjust the byte
+				bait = arrBit[cantByte] // adjust the byte
 
 				mask = doMask(cantBit) // make the mask by how many bits i need
 				bait = bait & mask     // make the byte
 
-				arr_bit[cantByte] = bait // put the byte on the array.
+				arrBit[cantByte] = bait // put the byte on the array.
 
 			}
 			body = nil
 		} else {
 			if cantBit > 0 {
-				bait = arr_bit[cantByte] // adjust the byte
-				mask = doMask(cantBit)   // make the mask by how many bits i need
-				bait = bait & mask       // make the byte
-				arr_bit[cantByte] = bait // put the byte on the array.
+				bait = arrBit[cantByte] // adjust the byte
+				mask = doMask(cantBit)  // make the mask by how many bits i need
+				bait = bait & mask      // make the byte
+				arrBit[cantByte] = bait // put the byte on the array.
 
 			}
 			NumberOfTrashBits += cantBit
@@ -91,7 +91,7 @@ func takeBits(bits int, body []byte, NumberOfTrashBits int) ([]byte, []byte, int
 			}
 
 		}
-		return arr_bit, body, NumberOfTrashBits
+		return arrBit, body, NumberOfTrashBits
 	} else {
 		fmt.Printf("This function is not available for values less than 8 bits.")
 		return nil, nil, 0
@@ -105,8 +105,8 @@ func doMask(bits int) uint8 {
 	} else if bits < 0 {
 		return uint8(0)
 	} else {
-		val_mask := math.Pow(2, float64(bits)) - 1
-		mask := uint8(val_mask) << uint(8-bits)
+		valMask := math.Pow(2, float64(bits)) - 1
+		mask := uint8(valMask) << uint(8-bits)
 		return mask
 	}
 
