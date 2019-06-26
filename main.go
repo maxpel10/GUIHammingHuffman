@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	SIZE_W = 600
-	SIZE_H = 400
+	SizeW = 600
+	SizeH = 400
 )
 
 func main() {
@@ -20,13 +20,13 @@ func main() {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
 				Text:      "Menu Principal",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -76,10 +76,10 @@ func main() {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -98,7 +98,7 @@ func preHammingWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Menu Hamming",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -143,10 +143,10 @@ func preHammingWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -159,13 +159,13 @@ func preHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
 				Text:      "Menu Huffman",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -204,10 +204,10 @@ func preHuffmanWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -226,7 +226,7 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Menu Hamming/Huffman",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -265,10 +265,10 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -302,12 +302,12 @@ func hammingWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Hamming",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione el tamaño:",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
@@ -317,7 +317,7 @@ func hammingWindow(window *walk.MainWindow) {
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -337,7 +337,7 @@ func hammingWindow(window *walk.MainWindow) {
 			},
 			Label{
 				Text:      "Seleccione la fecha de decodificacion:",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -439,10 +439,10 @@ func hammingWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -464,12 +464,12 @@ func deHammingWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "DeHamming",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Corregir Errores",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			CheckBox{
@@ -478,11 +478,11 @@ func deHammingWindow(window *walk.MainWindow) {
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &url,
@@ -533,10 +533,10 @@ func deHammingWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -557,16 +557,16 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Introducir errores",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &url,
@@ -616,10 +616,10 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -646,12 +646,12 @@ func huffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Hufmman",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -671,7 +671,7 @@ func huffmanWindow(window *walk.MainWindow) {
 			},
 			Label{
 				Text:      "Seleccione la fecha de decodificacion:",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -730,9 +730,9 @@ func huffmanWindow(window *walk.MainWindow) {
 								}
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
-							error := huffman(urlString, unixDate)
-							if error != nil {
-								showError(mw, error.Error())
+							errs := huffman(urlString, unixDate)
+							if errs != nil {
+								showError(mw, errs.Error())
 							} else {
 								showSuccess(mw, "El archivo fue comprimido correctamente")
 							}
@@ -761,10 +761,10 @@ func huffmanWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -785,16 +785,16 @@ func deHuffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "DeHufmman",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &url,
@@ -817,9 +817,9 @@ func deHuffmanWindow(window *walk.MainWindow) {
 							/*mw.Dispose()
 							window.Show()
 							*/
-							error := desHuffman(urlString)
-							if error != nil {
-								showError(mw, error.Error())
+							errs := desHuffman(urlString)
+							if errs != nil {
+								showError(mw, errs.Error())
 							} else {
 								showSuccess(mw, "El archivo fue comprimido correctamente")
 							}
@@ -847,10 +847,10 @@ func deHuffmanWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -878,18 +878,18 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
 				Text:      "Hamming/Huffman",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione el tamaño:",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			ComboBox{
@@ -899,11 +899,11 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &url,
@@ -919,11 +919,11 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 			},
 			Label{
 				Text:      "Seleccione la fecha de decodificacion:",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &ano,
@@ -1021,10 +1021,10 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -1039,27 +1039,27 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{600, 400},
-		MaxSize:  Size{600, 400},
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
 				Text:      "DeHamming/DeHuffman",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione el tamaño aplicado:",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
-				MaxSize: Size{600, 20},
+				MaxSize: Size{Width: 600, Height: 20},
 				Children: []Widget{
 					TextEdit{
 						AssignTo: &url,
@@ -1109,10 +1109,10 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -1133,12 +1133,12 @@ func preStatisticsWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Estadisticas de tamaño",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo original",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			HSplitter{
@@ -1187,10 +1187,10 @@ func preStatisticsWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -1211,82 +1211,82 @@ func statisticsWindow(window *walk.MainWindow, url string) {
 		Children: []Widget{
 			Label{
 				Text:      "Estadisticas de tamaño",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[0],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[1],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[2],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[3],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[4],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[5],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[6],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[7],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[8],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[9],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[10],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[11],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[12],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[13],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			Label{
 				Text:      answer[14],
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			PushButton{
@@ -1309,10 +1309,10 @@ func statisticsWindow(window *walk.MainWindow, url string) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SIZE_W)/2,
-		(yScreen-SIZE_H)/2,
-		SIZE_W,
-		SIZE_H,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
@@ -1334,7 +1334,7 @@ func dropFile(window *walk.MainWindow) string {
 		Children: []Widget{
 			Label{
 				Text:      "Arrastre el archivo aquí abajo:",
-				Font:      Font{"Arial", 12, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 12, Bold: true},
 				TextColor: walk.RGB(255, 255, 255),
 			},
 			TextEdit{
@@ -1396,12 +1396,12 @@ func showError(window *walk.MainWindow, text string) {
 		Children: []Widget{
 			Label{
 				Text:      "Error!",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(238, 50, 19),
 			},
 			Label{
 				Text:      text,
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(238, 50, 19),
 			},
 			PushButton{
@@ -1444,12 +1444,12 @@ func showSuccess(window *walk.MainWindow, text string) {
 		Children: []Widget{
 			Label{
 				Text:      "Exito",
-				Font:      Font{"Arial", 20, true, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 20, Bold: true},
 				TextColor: walk.RGB(25, 167, 40),
 			},
 			Label{
 				Text:      text,
-				Font:      Font{"Arial", 11, false, false, false, false},
+				Font:      Font{Family: "Arial", PointSize: 11},
 				TextColor: walk.RGB(25, 167, 40),
 			},
 			PushButton{
