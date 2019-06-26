@@ -264,8 +264,8 @@ func doMask(bits int) uint8 {
 	} else if bits < 0 {
 		return uint8(0)
 	} else {
-		val_mask := math.Pow(2, float64(bits)) - 1
-		mask := uint8(val_mask) << uint(8-bits)
+		valMask := math.Pow(2, float64(bits)) - 1
+		mask := uint8(valMask) << uint(8-bits)
 		return mask
 	}
 
