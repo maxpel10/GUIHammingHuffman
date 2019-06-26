@@ -275,11 +275,7 @@ func compress32(input []byte) []byte {
 		}
 	}
 	for i := 0; i < 4; i++ {
-		if input[len(input)-5+i] != 0 {
-			compressed = append(compressed, input[len(input)-5+i])
-		} else {
-			compressed = append(compressed, input[len(input)-5+i])
-		}
+		compressed = append(compressed, input[len(input)-5+i])
 	}
 	return compressed
 }
@@ -383,13 +379,7 @@ func compress1024(input []byte) []byte {
 		}
 	}
 	for i := 0; i < bytesBlock; i++ {
-		if len(input) != bytesBlock+1 {
-			if input[len(input)-(bytesBlock+1)+i] != 0 {
-				compressed = append(compressed, input[len(input)-(bytesBlock+1)+i])
-			}
-		} else {
-			compressed = append(compressed, input[len(input)-(bytesBlock+1)+i])
-		}
+		compressed = append(compressed, input[len(input)-(bytesBlock+1)+i])
 	}
 	return compressed
 }

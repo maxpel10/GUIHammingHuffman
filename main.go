@@ -15,10 +15,11 @@ const (
 	SizeH = 400
 )
 
-var family = "Microsoft New Tai Lue"
+var family = "Bahnschrift Light"
+var windowColor = walk.RGB(76, 80, 95)
+var textColor = walk.RGB(233, 235, 240)
 
 //"Nirmala UI"
-//"Microsoft New Tai Lue"
 
 func main() {
 	var mw *walk.MainWindow
@@ -31,8 +32,8 @@ func main() {
 		Children: []Widget{
 			Label{
 				Text:      "Menu Principal",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			HSplitter{
 				Children: []Widget{
@@ -79,7 +80,7 @@ func main() {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -111,8 +112,8 @@ func preHammingWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Menu Hamming",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			HSplitter{
 				Children: []Widget{
@@ -150,7 +151,7 @@ func preHammingWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -182,8 +183,8 @@ func preHuffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Menu Huffman",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			HSplitter{
 				Children: []Widget{
@@ -214,7 +215,7 @@ func preHuffmanWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -246,8 +247,8 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Menu Hamming/Huffman",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			HSplitter{
 				Children: []Widget{
@@ -259,7 +260,7 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 						},
 					},
 					PushButton{
-						Text: "Desproteger y desproteger archivo",
+						Text: "Desproteger y descomprimir archivo",
 						Font: Font{Family: family, PointSize: 11},
 						OnClicked: func() {
 							deHammingHuffmanWindow(mw)
@@ -278,7 +279,7 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -325,13 +326,13 @@ func hammingWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Hamming",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione el tamaño:",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			ComboBox{
 				Font:         Font{Family: family, PointSize: 11},
@@ -342,7 +343,7 @@ func hammingWindow(window *walk.MainWindow) {
 			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -364,7 +365,7 @@ func hammingWindow(window *walk.MainWindow) {
 			Label{
 				Text:      "Seleccione la fecha de decodificacion:",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -463,7 +464,7 @@ func hammingWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -498,13 +499,13 @@ func deHammingWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "DeHamming",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Corregir Errores",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			CheckBox{
 				Font:     Font{Family: family, PointSize: 12},
@@ -514,7 +515,7 @@ func deHammingWindow(window *walk.MainWindow) {
 			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -561,7 +562,7 @@ func deHammingWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -595,13 +596,13 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Introducir errores",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -648,7 +649,7 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -688,13 +689,13 @@ func huffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Hufmman",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -716,7 +717,7 @@ func huffmanWindow(window *walk.MainWindow) {
 			Label{
 				Text:      "Seleccione la fecha de decodificacion:",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -803,7 +804,7 @@ func huffmanWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -837,13 +838,13 @@ func deHuffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "DeHufmman",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -890,7 +891,7 @@ func deHuffmanWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -937,13 +938,13 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Hamming/Huffman",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione el tamaño:",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			ComboBox{
 				Font:         Font{Family: family, PointSize: 11},
@@ -954,7 +955,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -976,7 +977,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 			Label{
 				Text:      "Seleccione la fecha de decodificacion:",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -1075,7 +1076,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -1109,18 +1110,18 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "DeHamming/DeHuffman",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione el tamaño aplicado:",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -1167,7 +1168,7 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -1201,13 +1202,13 @@ func preStatisticsWindow(window *walk.MainWindow) {
 		Children: []Widget{
 			Label{
 				Text:      "Estadisticas de tamaño",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo original",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			HSplitter{
 				MaxSize: Size{Width: 600, Height: 20},
@@ -1249,7 +1250,7 @@ func preStatisticsWindow(window *walk.MainWindow) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -1283,83 +1284,83 @@ func statisticsWindow(window *walk.MainWindow, url string) {
 		Children: []Widget{
 			Label{
 				Text:      "Estadisticas de tamaño",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[0],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[1],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[2],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[3],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[4],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[5],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[6],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[7],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[8],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[9],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[10],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[11],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[12],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[13],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			Label{
 				Text:      answer[14],
 				Font:      Font{Family: family, PointSize: 11},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			PushButton{
 				Text: "Volver",
@@ -1372,7 +1373,7 @@ func statisticsWindow(window *walk.MainWindow, url string) {
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -1408,7 +1409,7 @@ func dropFile(window *walk.MainWindow) string {
 			Label{
 				Text:      "Arrastre el archivo aquí abajo:",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			TextEdit{
 				ReadOnly: true,
@@ -1425,7 +1426,7 @@ func dropFile(window *walk.MainWindow) string {
 			},
 		},
 	}.Create()
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -1471,7 +1472,7 @@ func showError(window *walk.MainWindow, text string) {
 		Children: []Widget{
 			Label{
 				Text:      "Error!",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
 				TextColor: walk.RGB(238, 50, 19),
 			},
 			Label{
@@ -1488,7 +1489,7 @@ func showError(window *walk.MainWindow, text string) {
 			},
 		},
 	}.Create()
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -1519,7 +1520,7 @@ func showSuccess(window *walk.MainWindow, text string) {
 		Children: []Widget{
 			Label{
 				Text:      "Exito",
-				Font:      Font{Family: family, PointSize: 20, Bold: true},
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
 				TextColor: walk.RGB(25, 167, 40),
 			},
 			Label{
@@ -1536,7 +1537,7 @@ func showSuccess(window *walk.MainWindow, text string) {
 			},
 		},
 	}.Create()
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
@@ -1572,26 +1573,26 @@ func exitWindow(window *walk.MainWindow) {
 				TextAlignment: AlignHNearVNear,
 				Text:          "Equipo de desarrollo",
 				Font:          Font{Family: family, PointSize: 12},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 			},
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "DECENA, Facundo Matías --- facundo.decena@gmail.com",
 				Font:          Font{Family: family, PointSize: 10},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 			},
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "PELLEGRINO, Maximiliano --- maxi.101997@gmail.com",
 				Font:          Font{Family: family, PointSize: 10},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 			},
 
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "VERGES, Federico --- fede_16_98@hotmail.com",
 				Font:          Font{Family: family, PointSize: 10},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 			},
 			VSpacer{
 				Size: 20,
@@ -1600,19 +1601,19 @@ func exitWindow(window *walk.MainWindow) {
 				TextAlignment: AlignHNearVNear,
 				Text:          "Profesores a cargo",
 				Font:          Font{Family: family, PointSize: 11},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 			},
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "SILVESTRI, Mario Alfredo",
 				Font:          Font{Family: family, PointSize: 9},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 			},
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "MONTEJANO, German Antonio",
 				Font:          Font{Family: family, PointSize: 9},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 			},
 			VSpacer{
 				Size: 40,
@@ -1620,7 +1621,7 @@ func exitWindow(window *walk.MainWindow) {
 			Label{
 				Text:      "¿Esta seguro que desea salir?",
 				Font:      Font{Family: family, PointSize: 16, Bold: true},
-				TextColor: walk.RGB(255, 255, 255),
+				TextColor: textColor,
 			},
 			VSpacer{
 				Size: 50,
@@ -1647,13 +1648,13 @@ func exitWindow(window *walk.MainWindow) {
 			Label{
 				Text:          "Universidad Nacional de San Luis, 2019",
 				Font:          Font{Family: family, PointSize: 8},
-				TextColor:     walk.RGB(255, 255, 255),
+				TextColor:     textColor,
 				TextAlignment: 3,
 			},
 		},
 	}.Create()
 
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
 	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
