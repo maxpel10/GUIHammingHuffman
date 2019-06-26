@@ -15,7 +15,10 @@ const (
 	SizeH = 400
 )
 
-var family = "Segoe UI"
+var family = "Microsoft New Tai Lue"
+
+//"Nirmala UI"
+//"Microsoft New Tai Lue"
 
 func main() {
 	var mw *walk.MainWindow
