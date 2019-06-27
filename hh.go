@@ -3,7 +3,7 @@ package main
 import (
 	"./HammingCodification"
 	"./HuffmanCodification"
-	"github.com/pkg/errors"
+	"src/github.com/pkg/errors"
 	"strconv"
 	"strings"
 )

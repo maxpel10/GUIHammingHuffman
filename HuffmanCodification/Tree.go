@@ -1,7 +1,7 @@
 package HuffmanCodification
 
 import (
-	"github.com/pkg/errors"
+	"src/github.com/pkg/errors"
 	"strings"
 )
 
