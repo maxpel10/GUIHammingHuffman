@@ -22,6 +22,7 @@ var family = "Microsoft New Tai Lue"
 
 func main() {
 	var mw *walk.MainWindow
+	firstWindow(mw)
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
@@ -1555,6 +1556,49 @@ func showSuccess(window *walk.MainWindow, text string) {
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
 	mw.Run()
 	window.SetEnabled(true)
+}
+func firstWindow(window *walk.MainWindow) {
+	var mw *walk.MainWindow
+	_ = MainWindow{
+		Title:    "Práctico de máquina TI",
+		AssignTo: &mw,
+		MinSize:  Size{Width: 600, Height: 400},
+		MaxSize:  Size{Width: 600, Height: 400},
+		Layout:   VBox{},
+		Children: []Widget{
+			TextLabel{
+				TextAlignment: AlignHCenterVCenter,
+				Text:          "Sistema de Protección \n y \n Compresion de archivos",
+				Font:          Font{Family: "Century Gothic", PointSize: 48},
+				TextColor:     walk.RGB(255, 255, 255),
+			},
+			TextLabel{
+				TextAlignment: AlignHNearVNear,
+				Text:          "Algoritmo Hamming y codigos Huffman",
+				Font:          Font{Family: "Century Gothic", PointSize: 32},
+				TextColor:     walk.RGB(255, 255, 255),
+			},
+		},
+	}.Create()
+
+	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-SizeW)/2,
+		(yScreen-SizeH)/2,
+		SizeW,
+		SizeH,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
 }
 
 func exitWindow(window *walk.MainWindow) {
