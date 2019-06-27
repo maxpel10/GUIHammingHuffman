@@ -7,7 +7,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 )
 
 const (
@@ -19,22 +18,31 @@ var family = "Bahnschrift Light"
 var windowColor = walk.RGB(76, 80, 95)
 var textColor = walk.RGB(233, 235, 240)
 
-//"Nirmala UI"
-
 func main() {
 	var mw *walk.MainWindow
-	firstWindow(mw)
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
+			TextLabel{
+				TextAlignment: AlignHCenterVCenter,
+				Text:          "Bienvenido al Sistema de Protección y Compresión de archivos!\nAlgoritmo Hamming y Códigos Huffman",
+				Font:          Font{Family: family, PointSize: 12, Bold: true},
+				TextColor:     walk.RGB(25, 167, 40),
+			},
 			Label{
-				Text:      "Menu Principal",
+
+				Text:      "Menú Principal",
 				Font:      Font{Family: family, PointSize: 20, Bold: false},
 				TextColor: textColor,
+			},
+			ImageView{
+				Alignment: AlignHFarVCenter,
+				Image:     "info.png",
+				OnMouseDown: func(x, y int, button walk.MouseButton) {
+					infoWindow(mw)
+				},
 			},
 			HSplitter{
 				Children: []Widget{
@@ -75,6 +83,7 @@ func main() {
 				Text: "Salir",
 				Font: Font{Family: family, PointSize: 11},
 				OnClicked: func() {
+					mw.SetEnabled(false)
 					exitWindow(mw)
 				},
 			},
@@ -107,8 +116,6 @@ func preHammingWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -178,8 +185,6 @@ func preHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -242,8 +247,6 @@ func preHammingHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -308,7 +311,7 @@ func hammingWindow(window *walk.MainWindow) {
 	var hora *walk.TextEdit
 	var minutos *walk.TextEdit
 	var segundos *walk.TextEdit
-	var menuItems = []string{ // ComboBox項目リスト
+	var menuItems = []string{
 		"Hamming 7 (Seguridad Muy Alta)",
 		"Hamming 32 (Seguridad Alta)",
 		"Hamming 1024 (Seguridad Medio)",
@@ -321,8 +324,6 @@ func hammingWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -347,7 +348,7 @@ func hammingWindow(window *walk.MainWindow) {
 				TextColor: textColor,
 			},
 			HSplitter{
-				MaxSize: Size{Width: 600, Height: 20},
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					TextEdit{
 						Font:     Font{Family: family, PointSize: 10},
@@ -404,6 +405,7 @@ func hammingWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Font: Font{Family: family, PointSize: 11},
@@ -443,8 +445,18 @@ func hammingWindow(window *walk.MainWindow) {
 									return
 								}
 							}
+							date := getDate(year, month, day, hour, minutes, seconds)
+							answer, err := compareDate(date)
+							if err != nil {
+								showError(mw, err.Error())
+								return
+							}
+							if !answer {
+								showError(mw, "Fecha ingresada anterior a fecha actual.")
+								return
+							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
-							err := preHamming(size, fileName, unixDate)
+							err = preHamming(size, fileName, unixDate)
 							if err != nil {
 								showError(mw, err.Error())
 							} else {
@@ -494,24 +506,12 @@ func deHammingWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
 				Text:      "DeHamming",
 				Font:      Font{Family: family, PointSize: 20, Bold: false},
 				TextColor: textColor,
-			},
-			Label{
-				Text:      "Corregir Errores",
-				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: textColor,
-			},
-			CheckBox{
-				Font:     Font{Family: family, PointSize: 12},
-				AssignTo: &checkBox,
-				Checked:  true,
 			},
 			Label{
 				Text:      "Seleccione la ruta del archivo",
@@ -535,6 +535,23 @@ func deHammingWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
+				MaxSize: Size{Width: 600, Height: 20},
+				Children: []Widget{
+
+					Label{
+						Text:      "Corregir Errores",
+						Font:      Font{Family: family, PointSize: 12, Bold: true},
+						TextColor: textColor,
+					},
+					CheckBox{
+						Font:     Font{Family: family, PointSize: 12},
+						AssignTo: &checkBox,
+						Checked:  true,
+					},
+				},
+			},
+			HSplitter{
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Text: "Desproteger",
@@ -591,8 +608,6 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -623,6 +638,7 @@ func introduceErrorsWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Text: "Introducir errores",
@@ -684,8 +700,6 @@ func huffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -756,15 +770,12 @@ func huffmanWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
-				MaxSize: Size{Width: 600, Height: 50},
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Text: "Comprimir",
 						Font: Font{Family: family, PointSize: 11},
 						OnClicked: func() {
-							/*mw.Dispose()
-							window.Show()
-							*/
 							var day, month, year, hour, minutes, seconds int
 							err := make([]error, 6)
 
@@ -781,6 +792,16 @@ func huffmanWindow(window *walk.MainWindow) {
 									showError(mw, "El formato de la fecha no es válido")
 									return
 								}
+							}
+							date := getDate(year, month, day, hour, minutes, seconds)
+							answer, erro := compareDate(date)
+							if erro != nil {
+								showError(mw, erro.Error())
+								return
+							}
+							if !answer {
+								showError(mw, "Fecha ingresada anterior a fecha actual.")
+								return
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
 							errs := huffman(urlString, unixDate)
@@ -833,8 +854,6 @@ func deHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -865,7 +884,7 @@ func deHuffmanWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
-				MaxSize: Size{Width: 600, Height: 50},
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Text: "Descomprimir",
@@ -921,7 +940,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 	var minutos *walk.TextEdit
 	var segundos *walk.TextEdit
 	var comboBox *walk.ComboBox
-	var menuItems = []string{ // ComboBox項目リスト
+	var menuItems = []string{
 		"Hamming 7 (Seguridad Muy Alta)",
 		"Hamming 32 (Seguridad Alta)",
 		"Hamming 1024 (Seguridad Medio)",
@@ -933,8 +952,6 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -959,7 +976,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 				TextColor: textColor,
 			},
 			HSplitter{
-				MaxSize: Size{Width: 600, Height: 20},
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					TextEdit{
 						Font:     Font{Family: family, PointSize: 11},
@@ -1016,6 +1033,7 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Text: "Comprimir y proteger",
@@ -1054,6 +1072,16 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 									showError(mw, "El formato de la fecha no es válido")
 									return
 								}
+							}
+							date := getDate(year, month, day, hour, minutes, seconds)
+							answer, erro := compareDate(date)
+							if erro != nil {
+								showError(mw, erro.Error())
+								return
+							}
+							if !answer {
+								showError(mw, "Fecha ingresada anterior a fecha actual.")
+								return
 							}
 							unixDate := convertDate(year, month, day, hour, minutes, seconds)
 							err := preHammingHuffman(size, fileName, unixDate)
@@ -1105,8 +1133,6 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -1115,17 +1141,12 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 				TextColor: textColor,
 			},
 			Label{
-				Text:      "Seleccione el tamaño aplicado:",
-				Font:      Font{Family: family, PointSize: 12, Bold: true},
-				TextColor: textColor,
-			},
-			Label{
 				Text:      "Seleccione la ruta del archivo",
 				Font:      Font{Family: family, PointSize: 12, Bold: true},
 				TextColor: textColor,
 			},
 			HSplitter{
-				MaxSize: Size{Width: 600, Height: 20},
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					TextEdit{
 						Font:     Font{Family: family, PointSize: 11},
@@ -1142,6 +1163,7 @@ func deHammingHuffmanWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Text: "Desproteger y descomprimir",
@@ -1197,8 +1219,6 @@ func preStatisticsWindow(window *walk.MainWindow) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -1212,7 +1232,7 @@ func preStatisticsWindow(window *walk.MainWindow) {
 				TextColor: textColor,
 			},
 			HSplitter{
-				MaxSize: Size{Width: 600, Height: 20},
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					TextEdit{
 						Font:     Font{Family: family, PointSize: 11},
@@ -1229,13 +1249,18 @@ func preStatisticsWindow(window *walk.MainWindow) {
 				},
 			},
 			HSplitter{
-				MaxSize: Size{Width: 600, Height: 50},
+				MaxSize: Size{Width: 600, Height: 30},
 				Children: []Widget{
 					PushButton{
 						Text: "Ver tamaños",
 						Font: Font{Family: family, PointSize: 11},
 						OnClicked: func() {
-							statisticsWindow(mw, url.Text())
+							_, err := loadFile(url.Text(), false)
+							if err != nil {
+								showError(mw, err.Error())
+							} else {
+								statisticsWindow(mw, url.Text())
+							}
 						},
 					},
 					PushButton{
@@ -1279,8 +1304,6 @@ func statisticsWindow(window *walk.MainWindow, url string) {
 	_ = MainWindow{
 		Title:    "Práctico de máquina TI",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
 			Label{
@@ -1449,20 +1472,6 @@ func dropFile(window *walk.MainWindow) string {
 	return ret
 }
 
-func convertDate(year int, month int, day int, hour int, minutes int, seconds int) []byte {
-	//No error found then create the date
-	parseMonth := time.Month(month)
-	location, _ := time.LoadLocation("America/Argentina/Cordoba")
-	auxDate := time.Date(year, parseMonth, day, hour, minutes, seconds, 0, location)
-	auxUnixDate := auxDate.Unix()
-	s := []byte(strconv.FormatInt(auxUnixDate, 10))
-	unixDate := []byte(s)
-	for i := len(unixDate); i < 10; i = len(unixDate) {
-		unixDate = append([]byte{48}, unixDate...)
-	}
-	return unixDate
-}
-
 func showError(window *walk.MainWindow, text string) {
 	window.SetEnabled(false)
 	var mw *walk.MainWindow
@@ -1478,7 +1487,7 @@ func showError(window *walk.MainWindow, text string) {
 			},
 			Label{
 				Text:      text,
-				Font:      Font{Family: family, PointSize: 11},
+				Font:      Font{Family: family, PointSize: 11, Bold: true},
 				TextColor: walk.RGB(238, 50, 19),
 			},
 			PushButton{
@@ -1500,9 +1509,9 @@ func showError(window *walk.MainWindow, text string) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-480)/2,
+		(xScreen-550)/2,
 		(yScreen-200)/2,
-		480,
+		550,
 		200,
 		win.SWP_FRAMECHANGED,
 	)
@@ -1526,7 +1535,7 @@ func showSuccess(window *walk.MainWindow, text string) {
 			},
 			Label{
 				Text:      text,
-				Font:      Font{Family: family, PointSize: 11},
+				Font:      Font{Family: family, PointSize: 11, Bold: true},
 				TextColor: walk.RGB(25, 167, 40),
 			},
 			PushButton{
@@ -1558,64 +1567,23 @@ func showSuccess(window *walk.MainWindow, text string) {
 	mw.Run()
 	window.SetEnabled(true)
 }
-func firstWindow(window *walk.MainWindow) {
+
+func infoWindow(window *walk.MainWindow) {
+	window.SetEnabled(false)
 	var mw *walk.MainWindow
 	_ = MainWindow{
-		Title:    "Práctico de máquina TI",
+		Title:    "Info",
 		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
 		Layout:   VBox{},
 		Children: []Widget{
-			TextLabel{
-				TextAlignment: AlignHCenterVCenter,
-				Text:          "Sistema de Protección \n y \n Compresion de archivos",
-				Font:          Font{Family: "Century Gothic", PointSize: 48},
-				TextColor:     walk.RGB(255, 255, 255),
+			Label{
+				Text:      "Info",
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
 			},
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
-				Text:          "Algoritmo Hamming y codigos Huffman",
-				Font:          Font{Family: "Century Gothic", PointSize: 32},
-				TextColor:     walk.RGB(255, 255, 255),
-			},
-		},
-	}.Create()
-
-	windowColor, _ := walk.NewSolidColorBrush(walk.RGB(58, 52, 51))
-	mw.SetBackground(windowColor)
-
-	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
-
-	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
-	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
-	win.SetWindowPos(
-		mw.Handle(),
-		0,
-		(xScreen-SizeW)/2,
-		(yScreen-SizeH)/2,
-		SizeW,
-		SizeH,
-		win.SWP_FRAMECHANGED,
-	)
-	win.ShowWindow(mw.Handle(), win.SW_SHOW)
-	mw.Run()
-}
-
-func exitWindow(window *walk.MainWindow) {
-	window.Hide()
-	var mw *walk.MainWindow
-	_ = MainWindow{
-		Title:    "Práctico de máquina TI",
-		AssignTo: &mw,
-		MinSize:  Size{Width: 600, Height: 400},
-		MaxSize:  Size{Width: 600, Height: 400},
-		Layout:   VBox{},
-		Children: []Widget{
-
-			TextLabel{
-				TextAlignment: AlignHNearVNear,
-				Text:          "Equipo de desarrollo",
+				Text:          "\nEquipo de desarrollo",
 				Font:          Font{Family: family, PointSize: 12},
 				TextColor:     textColor,
 			},
@@ -1631,7 +1599,6 @@ func exitWindow(window *walk.MainWindow) {
 				Font:          Font{Family: family, PointSize: 10},
 				TextColor:     textColor,
 			},
-
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "VERGES, Federico --- fede_16_98@hotmail.com",
@@ -1644,60 +1611,34 @@ func exitWindow(window *walk.MainWindow) {
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "Profesores a cargo",
-				Font:          Font{Family: family, PointSize: 11},
+				Font:          Font{Family: family, PointSize: 12},
 				TextColor:     textColor,
 			},
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "SILVESTRI, Mario Alfredo",
-				Font:          Font{Family: family, PointSize: 9},
+				Font:          Font{Family: family, PointSize: 10},
 				TextColor:     textColor,
 			},
 			TextLabel{
 				TextAlignment: AlignHNearVNear,
 				Text:          "MONTEJANO, German Antonio",
-				Font:          Font{Family: family, PointSize: 9},
+				Font:          Font{Family: family, PointSize: 10},
 				TextColor:     textColor,
 			},
 			VSpacer{
 				Size: 40,
 			},
-			Label{
-				Text:      "¿Esta seguro que desea salir?",
-				Font:      Font{Family: family, PointSize: 16, Bold: true},
-				TextColor: textColor,
-			},
-			VSpacer{
-				Size: 50,
-			},
-			HSplitter{
-				Children: []Widget{
-					PushButton{
-						Text: "Volver",
-						Font: Font{Family: family, PointSize: 16},
-						OnClicked: func() {
-							mw.Dispose()
-							window.Show()
-						},
-					},
-					PushButton{
-						Text: "Salir",
-						Font: Font{Family: family, PointSize: 16},
-						OnClicked: func() {
-							os.Exit(3)
-						},
-					},
+			PushButton{
+				MaxSize: Size{Width: 50, Height: 50},
+				Text:    "Volver",
+				OnClicked: func() {
+					mw.Dispose()
+					window.Show()
 				},
-			},
-			Label{
-				Text:          "Universidad Nacional de San Luis, 2019",
-				Font:          Font{Family: family, PointSize: 8},
-				TextColor:     textColor,
-				TextAlignment: 3,
 			},
 		},
 	}.Create()
-
 	windowColor, _ := walk.NewSolidColorBrush(windowColor)
 	mw.SetBackground(windowColor)
 
@@ -1708,13 +1649,74 @@ func exitWindow(window *walk.MainWindow) {
 	win.SetWindowPos(
 		mw.Handle(),
 		0,
-		(xScreen-SizeW)/2,
-		(yScreen-SizeH)/2,
-		SizeW,
-		SizeH,
+		(xScreen-400)/2,
+		(yScreen-400)/2,
+		400,
+		400,
 		win.SWP_FRAMECHANGED,
 	)
 	win.ShowWindow(mw.Handle(), win.SW_SHOW)
 	mw.Run()
+	window.SetEnabled(true)
 
+}
+
+func exitWindow(window *walk.MainWindow) {
+	window.SetEnabled(false)
+	var mw *walk.MainWindow
+	_ = MainWindow{
+		AssignTo: &mw,
+		Layout:   VBox{},
+		Children: []Widget{
+			Label{
+				Text:      "Atención",
+				Font:      Font{Family: family, PointSize: 20, Bold: false},
+				TextColor: textColor,
+			},
+			Label{
+				Text:      "¿Esta seguro que desea salir?",
+				Font:      Font{Family: family, PointSize: 11},
+				TextColor: textColor,
+			},
+			HSplitter{
+				MaxSize: Size{Width: 600, Height: 30},
+				Children: []Widget{
+					PushButton{
+						Text: "Si",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Dispose()
+							os.Exit(0)
+						},
+					},
+					PushButton{
+						Text: "No",
+						OnClicked: func() {
+							mw.Dispose()
+							window.Show()
+						},
+					},
+				},
+			},
+		},
+	}.Create()
+	windowColor, _ := walk.NewSolidColorBrush(windowColor)
+	mw.SetBackground(windowColor)
+
+	win.SetWindowLong(mw.Handle(), win.GWL_STYLE, win.WS_BORDER) // removes default styling
+
+	xScreen := win.GetSystemMetrics(win.SM_CXSCREEN)
+	yScreen := win.GetSystemMetrics(win.SM_CYSCREEN)
+	win.SetWindowPos(
+		mw.Handle(),
+		0,
+		(xScreen-480)/2,
+		(yScreen-200)/2,
+		480,
+		200,
+		win.SWP_FRAMECHANGED,
+	)
+	win.ShowWindow(mw.Handle(), win.SW_SHOW)
+	mw.Run()
+	window.SetEnabled(true)
 }

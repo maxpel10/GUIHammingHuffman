@@ -3,9 +3,10 @@ package main
 import (
 	"./HammingCodification"
 	"./HuffmanCodification"
-	"src/github.com/pkg/errors"
+	"github.com/pkg/errors"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func introduceErrors(fileName string) error {
@@ -148,12 +149,12 @@ func preDeHamming(fileName string, fixErrors bool) error {
 }
 
 func statistics(url string) []string {
-	extension := strings.Split(url, ".")[1]
-	urlWithoutExtension := strings.Split(url, ".")[0]
+	auxExtension := strings.Split(url, ".")
+	extension := auxExtension[len(auxExtension)-1]
 	extensions := []string{"." + extension, ".ha1", ".ha2", ".ha3", ".ha4", ".huf", ".dic", ".hh1", ".dichh1", ".hh2", ".dichh2", ".hh3", ".dichh3", ".hh4", ".dichh4"}
 	ret := make([]string, 0)
 	for index := 0; index < len(extensions); index++ {
-		body, err := loadFile(urlWithoutExtension+extensions[index], false)
+		body, err := loadFile(strings.Replace(url, "."+extension, extensions[index], -1), false)
 		if err == nil {
 			switch extensions[index] {
 			case "." + extension:
@@ -368,4 +369,30 @@ func preDeHammingDeHuffman(fileName string) error {
 	}
 
 	return nil
+}
+
+func convertDate(year int, month int, day int, hour int, minutes int, seconds int) []byte {
+	//No error found then create the date
+	auxDate := getDate(year, month, day, hour, minutes, seconds)
+	auxUnixDate := auxDate.Unix()
+	s := []byte(strconv.FormatInt(auxUnixDate, 10))
+	unixDate := []byte(s)
+	for i := len(unixDate); i < 10; i = len(unixDate) {
+		unixDate = append([]byte{48}, unixDate...)
+	}
+	return unixDate
+}
+
+func getDate(year int, month int, day int, hour int, minutes int, seconds int) time.Time {
+	parseMonth := time.Month(month)
+	location, _ := time.LoadLocation("America/Argentina/Cordoba")
+	return time.Date(year, parseMonth, day, hour, minutes, seconds, 0, location)
+}
+
+func compareDate(date time.Time) (bool, error) {
+	actualUnixDate, err := actualTime()
+	if err != nil {
+		return false, err
+	}
+	return date.After(actualUnixDate), nil
 }
