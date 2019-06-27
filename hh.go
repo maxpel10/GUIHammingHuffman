@@ -47,13 +47,13 @@ func preHamming(size int, fileName string, unixDate []byte) error {
 	} else {
 		switch size {
 		case 7:
-			fileType = "ha1"
+			fileType = ".ha1"
 		case 32:
-			fileType = "ha2"
+			fileType = ".ha2"
 		case 1024:
-			fileType = "ha3"
+			fileType = ".ha3"
 		case 32768:
-			fileType = "ha4"
+			fileType = ".ha4"
 		}
 		if len(body) == 0 {
 			encodedBody = []byte{}
@@ -75,7 +75,7 @@ func preHamming(size int, fileName string, unixDate []byte) error {
 			}
 		}
 		extension := strings.Split(fileName, ".")
-		fileName = strings.Replace(fileName, extension[len(extension)-1], fileType, -1)
+		fileName = strings.Replace(fileName, "."+extension[len(extension)-1], fileType, -1)
 		encodedBody = append(encodedBody, unixDate...)
 		err = saveFile(fileName, encodedBody)
 		if err != nil {
@@ -202,8 +202,8 @@ func huffman(fileName string, unixDate []byte) error {
 	} else {
 		encodedBody, dictionary := HuffmanCodification.CallHuffman(body)
 		dictionary = append(dictionary, unixDate...)
-		fileName = strings.Split(fileName, ".")[0]
-		fileName = fileName + ".huf"
+		extension := strings.Split(fileName, ".")
+		fileName = strings.Replace(fileName, "."+extension[len(extension)-1], ".huf", -1)
 		err = saveFile(fileName, encodedBody)
 		if err != nil {
 			return err
@@ -293,12 +293,14 @@ func preHammingHuffman(size int, fileName string, unixDate []byte) error {
 	encodedDic = append(encodedDic, unixDate...)
 
 	//Save files
-	fileName = strings.Split(fileName, ".")[0]
-	err = saveFile(fileName+bodyExtension, encodedBody)
+	extension := strings.Split(fileName, ".")
+	fileName = strings.Replace(fileName, "."+extension[len(extension)-1], bodyExtension, -1)
+	err = saveFile(fileName, encodedBody)
 	if err != nil {
 		return err
 	}
-	err = saveFile(fileName+dicExtension, encodedDic)
+	fileName = strings.Replace(fileName, bodyExtension, dicExtension, -1)
+	err = saveFile(fileName, encodedDic)
 	if err != nil {
 		return err
 	}
@@ -341,7 +343,7 @@ func preDeHammingDeHuffman(fileName string) error {
 		return err1
 	}
 
-	encodedDic, err2 = loadFile(strings.Split(fileName, ".")[0]+dicExtension, true)
+	encodedDic, err2 = loadFile(strings.Replace(fileName, "."+extension[len(extension)-1], dicExtension, -1), true)
 	if err2 != nil {
 		return err2
 	}
@@ -360,7 +362,7 @@ func preDeHammingDeHuffman(fileName string) error {
 	descompressBody := HuffmanCodification.Deshuffman(decodedBody, decodedDic)
 
 	//Save file
-	err := saveFile(strings.Split(fileName, ".")[0]+finalExtension, descompressBody)
+	err := saveFile(strings.Replace(fileName, dicExtension, finalExtension, -1), descompressBody)
 	if err != nil {
 		return err
 	}
