@@ -455,7 +455,11 @@ func hammingWindow(window *walk.MainWindow) {
 								showError(mw, "Fecha ingresada anterior a fecha actual.")
 								return
 							}
-							unixDate := convertDate(year, month, day, hour, minutes, seconds)
+							unixDate, err := convertDate(year, month, day, hour, minutes, seconds)
+							if err != nil {
+								showError(mw, err.Error())
+								return
+							}
 							err = preHamming(size, fileName, unixDate)
 							if err != nil {
 								showError(mw, err.Error())
@@ -803,8 +807,12 @@ func huffmanWindow(window *walk.MainWindow) {
 								showError(mw, "Fecha ingresada anterior a fecha actual.")
 								return
 							}
-							unixDate := convertDate(year, month, day, hour, minutes, seconds)
-							errs := huffman(urlString, unixDate)
+							unixDate, errs := convertDate(year, month, day, hour, minutes, seconds)
+							if errs != nil {
+								showError(mw, errs.Error())
+								return
+							}
+							errs = huffman(urlString, unixDate)
 							if errs != nil {
 								showError(mw, errs.Error())
 							} else {
@@ -1083,8 +1091,12 @@ func hammingHuffmanWindow(window *walk.MainWindow) {
 								showError(mw, "Fecha ingresada anterior a fecha actual.")
 								return
 							}
-							unixDate := convertDate(year, month, day, hour, minutes, seconds)
-							err := preHammingHuffman(size, fileName, unixDate)
+							unixDate, err := convertDate(year, month, day, hour, minutes, seconds)
+							if err != nil {
+								showError(mw, err.Error())
+								return
+							}
+							err = preHammingHuffman(size, fileName, unixDate)
 							if err != nil {
 								showError(mw, err.Error())
 							} else {

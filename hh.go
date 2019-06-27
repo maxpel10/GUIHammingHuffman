@@ -371,7 +371,11 @@ func preDeHammingDeHuffman(fileName string) error {
 	return nil
 }
 
-func convertDate(year int, month int, day int, hour int, minutes int, seconds int) []byte {
+func convertDate(year int, month int, day int, hour int, minutes int, seconds int) ([]byte, error) {
+	if month < 0 || month > 12 || day < 0 || day > 31 || hour < 0 || hour > 24 || minutes < 0 || minutes > 60 || seconds < 0 || seconds > 60 {
+		err := errors.New("Fecha invalida")
+		return nil, err
+	}
 	//No error found then create the date
 	auxDate := getDate(year, month, day, hour, minutes, seconds)
 	auxUnixDate := auxDate.Unix()
@@ -380,7 +384,7 @@ func convertDate(year int, month int, day int, hour int, minutes int, seconds in
 	for i := len(unixDate); i < 10; i = len(unixDate) {
 		unixDate = append([]byte{48}, unixDate...)
 	}
-	return unixDate
+	return unixDate, nil
 }
 
 func getDate(year int, month int, day int, hour int, minutes int, seconds int) time.Time {
